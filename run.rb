@@ -5,14 +5,17 @@ def Main()
 	within30_10 = elducky.within(30, 10)
 	points = within30_10.length
 	
-	# sample of 10, within 10 and 3
-	sample, nm, hit = get_volley(within30_10, 10, 10, 3) 
+	(0...20).each do |i|
 	
-	#write(within30_10, 'elducky_possible')
-	puts sample
-	puts "#{(100*nm).round(2)}% points in near miss range"
-	puts "#{(100*hit).round(2)}% point in hit range"
-	puts "out of #{points} total points"
+		# sample of 10, within 10 and 3
+		sample, nm, hit = get_volley(within30_10, 10, 10, 3) 
+	
+		#write(within30_10, 'elducky_possible')
+		puts sample
+		puts "#{(100*nm).round(2)}% points in near miss range"
+		puts "#{(100*hit).round(2)}% point in hit range"
+		puts "out of #{points} total points"
+	end
 end
 
 now = Time.now
