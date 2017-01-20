@@ -68,15 +68,3 @@ end
 # 	   land within 10 and 30 of the set members. Repeat this 10-20 times and 
 # 	   choose the best option.
 
-def Main()
-	elducky = Point4D.new(30,10,30,10)
-	within30_10 = elducky.within(30, 10)
-	points = within30_10.length
-	#write(within30_10, 'elducky_possible')
-	puts within30_10
-	puts points
-end
-
-#now = Time.now
-#Main()
-#puts "Run time: #{Time.now - now}"
