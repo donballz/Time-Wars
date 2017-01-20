@@ -45,11 +45,42 @@ class Point4D
 	end
 end
 
+def get_volley(set, n, lim1, lim2)
+	# creates random sample of size n and checks it against the set's points
+	# returns the sample and the percentage of points in the set it hits
+	sample = set.sample(n)
+	total_pts, lim1_pts, lim2_pts = 0, 0, 0
+	set.each do |pt|
+		total_pts += 1
+		hit1, hit2 = false, false
+		sample.each do |shot| 
+			dist = shot.dist(pt)
+			if dist <= lim1
+				hit1 = true
+			else
+				hit1 = false unless hit1
+			end
+			dist = shot.dist(pt)
+			if dist <= lim2
+				hit2 = true
+			else
+				hit2 = false unless hit2
+			end
+		end
+		lim1_pts += 1 if hit1
+		lim2_pts += 1 if hit2
+	end
+end
+
+# Try: choose random set check percentage of points in elducky's glancing blow
+# 	   land within 10 and 30 of the set members. Repeat this 10-20 times and 
+# 	   choose the best option.
+
 def Main()
 	elducky = Point4D.new(30,10,30,10)
 	within30_10 = elducky.within(30, 10)
 	points = within30_10.length
-	write(within30_10, 'elducky_possible')
+	#write(within30_10, 'elducky_possible')
 	puts within30_10
 	puts points
 end
