@@ -38,9 +38,16 @@ class Point4D
 	end
 
 	def within(range, wo=0)
-		# return list of points within a range
+		# return list of points within a range from entire hypersphere
 		result = []
 		universe {|pt| result.push(pt) if pt.dist(self) <= range and pt.dist(self) >= wo}
+		return result
+	end
+	
+	def within_set(set, range, wo=0)
+		# return list of points within a range from given set of points
+		result = []
+		set.each {|pt| result.push(pt) if pt.dist(self) <= range and pt.dist(self) >= wo}
 		return result
 	end
 end

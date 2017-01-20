@@ -13,7 +13,7 @@ def Main()
 		#write(within30_10, 'elducky_possible')
 		puts sample
 		puts "#{(100*nm).round(2)}% points in near miss range"
-		puts "#{(100*hit).round(2)}% point in hit range"
+		puts "#{(100*hit).round(2)}% points in hit range"
 		puts "out of #{points} total points"
 	end
 end
