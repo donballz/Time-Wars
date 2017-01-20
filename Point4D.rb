@@ -49,7 +49,7 @@ def get_volley(set, n, lim1, lim2)
 	# creates random sample of size n and checks it against the set's points
 	# returns the sample and the percentage of points in the set it hits
 	sample = set.sample(n)
-	total_pts, lim1_pts, lim2_pts = 0, 0, 0
+	total_pts, lim1_pts, lim2_pts = 0.0, 0, 0
 	set.each do |pt|
 		hit1, hit2 = false, false
 		sample.each do |shot| 
@@ -61,6 +61,7 @@ def get_volley(set, n, lim1, lim2)
 		lim2_pts += 1 if hit2
 		total_pts += 1
 	end
+	return sample, lim1_pts / total_pts, lim2_pts / total_pts
 end
 
 # Try: choose random set check percentage of points in elducky's glancing blow
@@ -76,6 +77,6 @@ def Main()
 	puts points
 end
 
-now = Time.now
-Main()
-puts "Run time: #{Time.now - now}"
+#now = Time.now
+#Main()
+#puts "Run time: #{Time.now - now}"
