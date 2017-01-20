@@ -51,24 +51,15 @@ def get_volley(set, n, lim1, lim2)
 	sample = set.sample(n)
 	total_pts, lim1_pts, lim2_pts = 0, 0, 0
 	set.each do |pt|
-		total_pts += 1
 		hit1, hit2 = false, false
 		sample.each do |shot| 
 			dist = shot.dist(pt)
-			if dist <= lim1
-				hit1 = true
-			else
-				hit1 = false unless hit1
-			end
-			dist = shot.dist(pt)
-			if dist <= lim2
-				hit2 = true
-			else
-				hit2 = false unless hit2
-			end
+			hit1 = true if dist <= lim1
+			hit2 = true if dist <= lim2
 		end
 		lim1_pts += 1 if hit1
 		lim2_pts += 1 if hit2
+		total_pts += 1
 	end
 end
 
