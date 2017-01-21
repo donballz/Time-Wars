@@ -9,9 +9,9 @@ def Main()
 	
 	within1 = elducky1.within(30, 10)
 	within2 = elducky2.within_set(within1, 30, 10)
-	within3 = elducky2.within_set(within2, 30, 10)
-	within4 = elducky2.within_set(within3, 30, 10)
-	within5 = elducky2.within_set(within4, 30, 10)
+	within3 = elducky3.within_set(within2, 30, 10)
+	within4 = elducky4.within_set(within3, 30, 10)
+	within5 = elducky5.within_set(within4, 30, 10)
 	points = within5.length
 	
 	(0...20).each do |i|
