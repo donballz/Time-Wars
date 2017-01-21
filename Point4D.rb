@@ -78,6 +78,33 @@ def get_volley(set, n, lim1, lim2)
 	return sample, lim1_pts / total_pts, lim2_pts / total_pts
 end
 
+def get_volley2(set, n, lim1, lim2)
+	# selects single point randomly and eliminates points within lim1 
+	# before selecting another point to create sample of size n 
+	# and check it against the set's other points
+	# returns the sample and the percentage of points in the set it hits
+	copy = set.clone
+	sample = []
+	(1..n).each do |i|
+		single = set.sample(1)
+		set = single[0].without_set(set, lim1)
+		sample.push(single[0])
+	end
+	total_pts, lim1_pts, lim2_pts = 0.0, 0, 0
+	copy.each do |pt|
+		hit1, hit2 = false, false
+		sample.each do |shot| 
+			dist = shot.dist(pt)
+			hit1 = true if dist <= lim1
+			hit2 = true if dist <= lim2
+		end
+		lim1_pts += 1 if hit1
+		lim2_pts += 1 if hit2
+		total_pts += 1
+	end
+	return sample, lim1_pts / total_pts, lim2_pts / total_pts
+end
+
 # Try: choose random set check percentage of points in elducky's glancing blow
 # 	   land within 10 and 30 of the set members. Repeat this 10-20 times and 
 # 	   choose the best option.
