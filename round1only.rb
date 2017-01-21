@@ -116,17 +116,17 @@ Miss3 = [   Point4D.new(5, -9, -70, 3),
 
 def Main()
 	elducky1 = Point4D.new(30,10,30,10)
-	within1 = elducky1.within(30, 10)
-	within2 = Miss1.each {|pt| pt.without(within1, 30)}
-	within3 = Miss2.each {|pt| pt.without(within2, 30)}
-	within4 = Miss3.each {|pt| pt.without(within3, 30)}
+	possible = elducky1.within(30, 10)
+	Miss1.each {|pt| possible = pt.without(possible, 30)}
+	Miss2.each {|pt| possible = pt.without(possible, 30)}
+	Miss3.each {|pt| possible = pt.without(possible, 30)}
 	
-	points = within4.length
+	points = possible.length
 	
 	(0...20).each do |i|
 	
 		# sample of 10, within 10 and 3
-		sample, nm, hit = get_volley(within4, 10, 10, 3) 
+		sample, nm, hit = get_volley(possible, 10, 10, 3) 
 	
 		#write(within30_10, 'elducky_possible')
 		puts sample
