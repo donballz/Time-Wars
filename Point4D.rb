@@ -50,6 +50,13 @@ class Point4D
 		set.each {|pt| result.push(pt) if pt.dist(self) <= range and pt.dist(self) >= wo}
 		return result
 	end
+	
+	def without_set(set, range)
+		# return list of points which fully miss the shot by distance equal to range
+		result = []
+		set.each {|pt| result.push(pt) if pt.dist(self) > range}
+		return result
+	end
 end
 
 def get_volley(set, n, lim1, lim2)
