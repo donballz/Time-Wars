@@ -117,9 +117,9 @@ Miss3 = [   Point4D.new(5, -9, -70, 3),
 def Main()
 	elducky1 = Point4D.new(30,10,30,10)
 	within1 = elducky1.within(30, 10)
-	within2 = Miss1.without(within1, 30)
-	within3 = Miss1.without(within2, 30)
-	within4 = Miss1.without(within3, 30)
+	within2 = Miss1.each {|pt| pt.without(within1, 30)}
+	within3 = Miss2.each {|pt| pt.without(within2, 30)}
+	within4 = Miss3.each {|pt| pt.without(within3, 30)}
 	
 	points = within4.length
 	
