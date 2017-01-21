@@ -126,7 +126,7 @@ def Main()
 	(0...20).each do |i|
 	
 		# sample of 10, within 10 and 3
-		sample, nm, hit = get_volley(possible, 10, 10, 3) 
+		sample, nm, hit = get_volley2(possible, 10, 10, 3) 
 	
 		#write(within30_10, 'elducky_possible')
 		puts sample

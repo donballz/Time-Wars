@@ -83,6 +83,7 @@ def get_volley2(set, n, lim1, lim2)
 	# before selecting another point to create sample of size n 
 	# and check it against the set's other points
 	# returns the sample and the percentage of points in the set it hits
+	####### Takes 5 minutes longer and offers zero improvement
 	copy = set.clone
 	sample = []
 	(1..n).each do |i|
