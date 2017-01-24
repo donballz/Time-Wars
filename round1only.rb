@@ -1,7 +1,7 @@
 require_relative 'Point4D.rb'
 
 # use full-miss sets to further limit possibility sphere
-# broken into three sets because of a hunch about improved run time.
+# No value in separate miss sets
 
 Miss1 = [   Point4D.new(5, 5, 5, 5),
 			Point4D.new(-10, -10, -10, -10),
@@ -12,11 +12,8 @@ Miss1 = [   Point4D.new(5, 5, 5, 5),
 			Point4D.new(25, -30, 25, -20),
 			Point4D.new(-25, 45, 25, -50),
 			Point4D.new(-10, 60, 15, -70),
-			Point4D.new(0, 0, 0, 0)]
-
-
-
-Miss2 = [   Point4D.new(13, -32, -14, -14),
+			Point4D.new(0, 0, 0, 0),
+			Point4D.new(13, -32, -14, -14),
 			Point4D.new(13, 13, -59, -14),
 			Point4D.new(13, 13, -89, -14),
 			Point4D.new(58, 58, -14, -14),
@@ -38,12 +35,8 @@ Miss2 = [   Point4D.new(13, -32, -14, -14),
 			Point4D.new(20, -25, 10, 10),
 			Point4D.new(40, -25, 10, 10),
 			Point4D.new(-40, 25, 10, 10),
-			Point4D.new(-20, 25, 10, 10)]
-
-
-
-
-Miss3 = [   Point4D.new(5, -9, -70, 3),
+			Point4D.new(-20, 25, 10, 10),
+			Point4D.new(5, -9, -70, 3),
 			Point4D.new(-1, 44, -65, -42),
 			Point4D.new(40, -30, 42, -73),
 			Point4D.new(-36, 32, 79, -12),
@@ -93,16 +86,6 @@ Miss3 = [   Point4D.new(5, -9, -70, 3),
 			Point4D.new(0, -18, -91, 0),
 			Point4D.new(0, 28, -8, 70),
 			Point4D.new(0, 7, 9, -99),
-			Point4D.new(69, 69, 6, 6),
-			Point4D.new(-69, -69, 6, 6),
-			Point4D.new(1, 1, 2, 3),
-			Point4D.new(10, 10, 20, 30),
-			Point4D.new(-10, -10, -20, -30),
-			Point4D.new(-20, 30, -40, 50),
-			Point4D.new(-12, -36, 48, 5),
-			Point4D.new(30, 30, -30, 0),
-			Point4D.new(50, 50, -50, -50),
-			Point4D.new(8, 67, 53, 9),
 			Point4D.new(95, 0, 0, 0),
 			Point4D.new(-95, 0, 0, 0),
 			Point4D.new(0, 95, 0, 0),
@@ -118,8 +101,6 @@ def Main()
 	elducky1 = Point4D.new(30,10,30,10)
 	possible = elducky1.within(30, 10)
 	Miss1.each {|pt| possible = pt.without_set(possible, 30)}
-	Miss2.each {|pt| possible = pt.without_set(possible, 30)}
-	Miss3.each {|pt| possible = pt.without_set(possible, 30)}
 	
 	points = possible.length
 	
