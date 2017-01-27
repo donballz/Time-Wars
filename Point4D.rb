@@ -57,6 +57,21 @@ class Point4D
 		set.each {|pt| result.push(pt) if pt.dist(self) > range}
 		return result
 	end
+	
+	def point_set(range)
+		# returns set of points within range of given point
+		result = []
+		(self.x - range..self.x + range).each do |i|
+			(self.y - range..self.y + range).each do |j| 
+				(self.z - range..self.z + range).each do |k| 
+					(self.t - range..self.t + range).each do |l|
+						try = Point4D.new(i,j,k,t)
+						result.push(try) if self.dist(try) <= range
+					end
+				end
+			end
+		end
+	end
 end
 
 def get_volley(set, n, lim1, lim2)
