@@ -72,7 +72,7 @@ class Point4D
 			(self.y - range..self.y + range).each do |j| 
 				(self.z - range..self.z + range).each do |k| 
 					(self.t - range..self.t + range).each do |l|
-						try = Point4D.new(i,j,k,t)
+						try = Point4D.new(i,j,k,l)
 						result.push(try) if self.dist(try) <= range and i**2 + j**2 + k**2 + l**2  <= RADIUS**2
 					end
 				end
