@@ -67,25 +67,34 @@ def hunt(planet, owner)
 	return possible
 end
 
+def volley_generation(possible)
+	# generates random volleys and checks against coverage of possible space for planet
+	(0...20).each do |i|
+		# sample of 10, within 10 and 3
+		sample, nm, hit = get_volley(possible, 10, 10, 3) 
+	
+		puts sample
+		puts "#{(100*nm).round(2)}% points in near miss range"
+		puts "#{(100*hit).round(2)}% points in hit range"
+		puts "out of #{possible.length} total points"
+	end
+end
+
 def Main()
+	possibles = Hash.new()
 	Planet_info.each do |planet|
 		if planet[:alive] == 1
 			possible = hunt(planet[:planet], planet[:owner])
 			puts "#{planet[:owner]}: #{possible.length}"
+			possibles[planet[:owner]] = possible if possible.length > 0
 		end
 	end
-	
-	#(0...20).each do |i|
-	
-		# sample of 10, within 10 and 3
-		#sample, nm, hit = get_volley(possible, 10, 10, 3) 
-	
-		#write(within30_10, 'elducky_possible')
-		#puts sample
-		#puts "#{(100*nm).round(2)}% points in near miss range"
-		#puts "#{(100*hit).round(2)}% points in hit range"
-		#puts "out of #{points} total points"
-	#end
+	puts
+	puts
+	possibles.each do |k, v| 
+		puts k
+		volley_generation(v)
+	end
 end
 
 now = Time.now
