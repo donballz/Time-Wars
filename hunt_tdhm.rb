@@ -3,12 +3,18 @@ require_relative 'Point4D.rb'
 require_relative 'Spreadsheet.rb'
 
 # first document to attempt pulling data from spreadsheet
+
+# Values specfic to planet
+PLANET = 'TDHM'
+OWNER = 'Vorian Atreides'
+Near_miss = Point4D.new(-10, 60, 15, -70) # mod knowledge, not fully public
+
+# Values common to all files of this type
 Public_data = Spreadsheet.new(EXCL + 'tw_201601_round06.xlsx')
 X = 4
 Y = 5
 Z = 6
 T = 7
-Near_miss = Point4D.new(-10, 60, 15, -70) # mod knowledge, not fully public
 
 def misses(planet_name)
 	# gets misses for planet
@@ -22,8 +28,9 @@ def misses(planet_name)
 					row.each { |cell| loc = row.index(cell) if cell == planet_name }
 					first_row = false if loc
 				else
-					misses.push(Point4D.new(row[X], row[Y], row[Z], row[T])) if row[loc] == 'XXX' or row[loc] == 'X'
-					#puts row[loc]
+					if (row[loc] == 'XXX' or row[loc] == 'X') and row[0] != OWNER
+						misses.push(Point4D.new(row[X], row[Y], row[Z], row[T])) 
+					end
 				end
 			end
 		end
@@ -34,8 +41,8 @@ end
 def Main()
 	possible = Near_miss.point_set(10)
 	puts possible.length
-	puts misses('TDHM').length
-	misses('TDHM').each do |pt| 
+	puts misses(PLANET).length
+	misses(PLANET).each do |pt| 
 		possible = pt.without_set(possible, 30)
 		puts possible.length
 	end
