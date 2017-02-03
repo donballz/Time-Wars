@@ -41,10 +41,6 @@ def planet_data(planet_name, owner, status)
 					if (row[loc] == status+status+status or row[loc].strip == status) and row[0] != owner
 						misses.push(Point4D.new(row[X], row[Y], row[Z], row[T])) 
 					end
-					if planet_name == 'DWHO' and row[0] == 'Aractuary' and row[1] == 7 and row[2] == 'Volley 4'
-						puts "rowfound"
-						puts "#{row[loc].strip} == #{status}"
-					end
 				end
 			end
 		end
@@ -55,11 +51,8 @@ end
 def hunt(planet, owner)
 	# hunts for given planet, returns set of possible points
 	misses = planet_data(planet, owner, 'X')
-	puts "#{owner} misses: #{misses.length}"
 	glancing_blows = planet_data(planet, owner, 'G')
-	puts "#{owner} glancing_blows: #{glancing_blows.length}"
 	near_misses = planet_data(planet, owner, 'N')
-	puts "#{owner} near_misses: #{near_misses.length}"
 	if near_misses.length > 0 then
 		possible = near_misses[0].point_set(10)
 	elsif glancing_blows.length > 0 then
