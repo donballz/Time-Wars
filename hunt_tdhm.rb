@@ -40,12 +40,7 @@ end
 
 def Main()
 	possible = Near_miss.point_set(10)
-	puts possible.length
-	puts misses(PLANET).length
-	misses(PLANET).each do |pt| 
-		possible = pt.without_set(possible, 30)
-		puts possible.length
-	end
+	misses(PLANET).each { |pt| possible = pt.without_set(possible, 30) }
 	
 	points = possible.length
 	
