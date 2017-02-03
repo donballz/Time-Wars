@@ -184,7 +184,7 @@ def Main()
 	elducky5 = Point4D.new(32,15,34,1) # round 2, Doctor Who V2
 	elducky6 = Point4D.new(18,17,26,29) # round 2, Doctor Who V4
 	elducky7 = Point4D.new(40,20,36,8) # round 2, soyleche V4
-	possible = elducky1.within(30, 10)
+	possible = elducky1.point_set(30)
 	possible = elducky2.within_set(possible, 30, 10)
 	possible = elducky3.within_set(possible, 30, 10)
 	possible = elducky4.within_set(possible, 30, 10)
@@ -199,7 +199,7 @@ def Main()
 	(0...20).each do |i|
 	
 		# sample of 10, within 10 and 3
-		sample, nm, hit = get_volley2(possible, 10, 10, 3) 
+		sample, nm, hit = get_volley(possible, 10, 10, 3) 
 	
 		#write(within30_10, 'elducky_possible')
 		puts sample
