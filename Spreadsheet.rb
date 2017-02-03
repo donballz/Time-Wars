@@ -1,4 +1,5 @@
 require 'Roo'
+# must use 'gem install roo' to use this
 
 class Spreadsheet
   def initialize(file_path)
