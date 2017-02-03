@@ -16,8 +16,8 @@ Y = 5
 Z = 6
 T = 7
 
-def misses(planet_name)
-	# gets misses for planet
+def planet_data(planet_name, status)
+	# gets data for planet given by status flag
 	misses = []
 	loc = nil
 	Public_data.each_sheet do |s| 
@@ -28,7 +28,7 @@ def misses(planet_name)
 					row.each { |cell| loc = row.index(cell) if cell == planet_name }
 					first_row = false if loc
 				else
-					if (row[loc] == 'XXX' or row[loc] == 'X') and row[0] != OWNER
+					if (row[loc] == status+status+status or row[loc] == status) and row[0] != OWNER
 						misses.push(Point4D.new(row[X], row[Y], row[Z], row[T])) 
 					end
 				end
@@ -40,8 +40,16 @@ end
 
 def Main()
 	possible = Near_miss.point_set(10)
-	misses(PLANET).each { |pt| possible = pt.without_set(possible, 30) }
-	
+	puts possible.length
+	misses = planet_data(PLANET, 'X')
+	glancing_blows = planet_data(PLANET, 'G')
+	near_misses = planet_data(PLANET, 'N')
+	glancing_blows.each { |pt| possible = pt.within_set(possible, 30, 10) }
+	puts possible.length
+	near_misses.each { |pt| possible = pt.within_set(possible, 10 ,3) }
+	puts possible.length
+	misses.each { |pt| possible = pt.without_set(possible, 30) }
+	puts possible.length
 	points = possible.length
 	
 	(0...20).each do |i|
