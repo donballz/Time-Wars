@@ -5,8 +5,8 @@ require_relative 'Spreadsheet.rb'
 # first document to attempt pulling data from spreadsheet
 
 # Values specfic to planet
-PLANET = 'SMPR'
-OWNER = 'ElDucky'
+PLANET = 'DWHO'
+OWNER = 'Doctor Who'
 
 # Values common to all files of this type
 Public_data = Spreadsheet.new(EXCL + 'tw_201601_round06.xlsx')
@@ -42,13 +42,18 @@ def Main()
 	glancing_blows = planet_data(PLANET, 'G')
 	near_misses = planet_data(PLANET, 'N')
 	if near_misses.length > 0 then
-		possible = near_misses[0].point_set(10)
+		#possible = near_misses[0].point_set(10)
 	elsif glancing_blows.length > 0 then
-		possible = glancing_blows[0].point_set(30)
+		#possible = glancing_blows[0].point_set(30)
 	else
 		puts "ERROR: No definite data found"
 		return nil
 	end
+	nm1 = Point4D.new(-35,8,-45,-64)
+	nm2 = Point4D.new(-35,9,-50,-65)
+	possible = nm1.point_set(10)
+	puts possible.length
+	possible = nm2.within_set(possible, 10, 3)
 	puts possible.length
 	glancing_blows.each { |pt| possible = pt.within_set(possible, 30, 10) }
 	puts possible.length
