@@ -22,7 +22,7 @@ def misses(planet_name)
 					row.each { |cell| loc = row.index(cell) if cell == planet_name }
 					first_row = false if loc
 				else
-					misses.push(Point4D.new(row[X], row[Y], row[Z], row[T])) if row[loc] == 'XXX' or row[loc] = 'X'
+					misses.push(Point4D.new(row[X], row[Y], row[Z], row[T])) if row[loc] == 'XXX' or row[loc] == 'X'
 					#puts row[loc]
 				end
 			end
@@ -34,14 +34,18 @@ end
 def Main()
 	possible = Near_miss.point_set(10)
 	puts possible.length
-	planet_data('TDHM').each {|pt| possible = pt.without_set(possible, 30)}
+	puts misses('TDHM').length
+	misses('TDHM').each do |pt| 
+		possible = pt.without_set(possible, 30)
+		puts possible.length
+	end
 	
 	points = possible.length
 	
 	(0...20).each do |i|
 	
 		# sample of 10, within 10 and 3
-		sample, nm, hit = get_volley2(possible, 10, 10, 3) 
+		sample, nm, hit = get_volley(possible, 10, 10, 3) 
 	
 		#write(within30_10, 'elducky_possible')
 		puts sample
