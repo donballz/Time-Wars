@@ -34,6 +34,11 @@ class Point4D
 		return "(#{@x}, #{@y}, #{@z}, #{@t})"
 	end
 	
+	def ==(pt)
+		# equivalence test
+		@x == pt.x and @y == pt.y and @z == pt.z and @t == pt.t
+	end
+	
 	def dist(pt2)
 		# gives distance between any two points
 		((@x - pt2.x)**2 + (@y - pt2.y)**2 + (@z - pt2.z)**2 + (@t - pt2.t)**2)**0.5
