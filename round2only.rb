@@ -185,19 +185,12 @@ def Main()
 	elducky6 = Point4D.new(18,17,26,29) # round 2, Doctor Who V4
 	elducky7 = Point4D.new(40,20,36,8) # round 2, soyleche V4
 	possible = elducky1.within(30, 10)
-	puts "elducky1 #{possible.length}"
 	possible = elducky2.within_set(possible, 30, 10)
-	puts "elducky2 #{possible.length}"
 	possible = elducky3.within_set(possible, 30, 10)
-	puts "elducky3 #{possible.length}"
 	possible = elducky4.within_set(possible, 30, 10)
-	puts "elducky4 #{possible.length}"
 	possible = elducky5.within_set(possible, 30, 10)
-	puts "elducky5 #{possible.length}"
 	possible = elducky6.within_set(possible, 30, 10)
-	puts "elducky6 #{possible.length}"
 	possible = elducky7.within_set(possible, 30, 10)
-	puts "elducky7 #{possible.length}"
 	Miss1.each {|pt| possible = pt.without_set(possible, 30)}
 	Miss2.each {|pt| possible = pt.without_set(possible, 30)}
 	
