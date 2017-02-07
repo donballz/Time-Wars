@@ -27,7 +27,7 @@ def planet_data(planet_name, status)
 					row.each { |cell| loc = row.index(cell) if cell == planet_name }
 					first_row = false if loc
 				else
-					if (row[loc] == status+status+status or row[loc].strip == status) and row[0] != OWNER
+					if (row[loc] == status * 3 or row[loc].strip == status) and row[0] != OWNER
 						misses.push(Point4D.new(row[X], row[Y], row[Z], row[T])) 
 					end
 				end

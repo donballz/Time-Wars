@@ -20,7 +20,7 @@ Planet_info = [ { owner: 'BruteForce', planet: 'BFTP', alive: 0 },
 				{ owner: 'soyleche', planet: 'SOYL', alive: 0 }]
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201601_round06.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201601_round08.xlsx')
 X = 4
 Y = 5
 Z = 6
@@ -38,7 +38,7 @@ def planet_data(planet_name, owner, status)
 					row.each { |cell| loc = row.index(cell) if cell == planet_name }
 					first_row = false if loc
 				else
-					if (row[loc] == status+status+status or row[loc].strip == status) and row[0] != owner
+					if (row[loc] == status * 3 or row[loc].strip == status) and row[0] != owner
 						misses.push(Point4D.new(row[X], row[Y], row[Z], row[T])) 
 					end
 				end
