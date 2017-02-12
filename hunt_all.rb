@@ -7,7 +7,7 @@ require_relative 'Spreadsheet.rb'
 # Values specfic to planet
 Planet_info = [ { owner: 'BruteForce', planet: 'BFTP', alive: 0 },
 				{ owner: 'Doctor Who', planet: 'DWHO', alive: 1 },
-				{ owner: 'Bingboing', planet: '4DTS', alive: 1 },
+				{ owner: 'Bingboing', planet: '4DTS', alive: 0 },
 				{ owner: 'ElDucky', planet: 'SMPR', alive: 0 },
 				{ owner: 'Kangaz wit Attitude', planet: 'WF69', alive: 1 },
 				{ owner: 'Meshuga', planet: 'MIZ5', alive: 0 },
@@ -20,7 +20,7 @@ Planet_info = [ { owner: 'BruteForce', planet: 'BFTP', alive: 0 },
 				{ owner: 'soyleche', planet: 'SOYL', alive: 0 }]
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201601_round08.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201601_round09.xlsx')
 X = 4
 Y = 5
 Z = 6
@@ -80,7 +80,8 @@ def volley_generation(possible)
 	end
 end
 
-def Main()
+def hunt_all()
+	# iterates all available information and outputs 20 guesses for each planet with info
 	possibles = Hash.new()
 	Planet_info.each do |planet|
 		if planet[:alive] == 1
@@ -95,6 +96,45 @@ def Main()
 		puts k
 		volley_generation(v)
 	end
+	return nil
+end
+
+def misses_only(planet, owner)
+	# returns miss list if there is no solid info on the planet
+	misses = planet_data(planet, owner, 'X')
+	glancing_blows = planet_data(planet, owner, 'G')
+	near_misses = planet_data(planet, owner, 'N')
+	return misses if near_misses.length > 0 or glancing_blows.length > 0
+	return nil
+end
+
+def full_miss(point, misses)
+	# returns true if point outside 30 of all misses
+	misses.each { |pt| return false if pt.dist(point) < 30 }
+	return true
+end
+
+def miss_hunter()
+	# looks for planets without useful info -- slow
+	miss_hash = Hash.new()
+	possibles = Hash.new([])
+	Planet_info.each do |planet|
+		if planet[:alive] == 1
+			misses = misses_only(planet[:planet], planet[:owner])
+			miss_hash[planet[:owner]] = misses if misses
+		end
+	end
+	universe do |pt|
+		miss_hash.each do |planet, misses|
+			possibles[planet].push(pt) if full_miss(pt, misses)
+		end
+	end 
+	possibles.each { |planet, pos| puts "#{planet}: #{pos.length}" }
+end
+
+def Main()
+	#hunt_all()
+	miss_hunter()
 end
 
 now = Time.now
