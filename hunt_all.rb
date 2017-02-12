@@ -104,7 +104,7 @@ def misses_only(planet, owner)
 	misses = planet_data(planet, owner, 'X')
 	glancing_blows = planet_data(planet, owner, 'G')
 	near_misses = planet_data(planet, owner, 'N')
-	return misses if near_misses.length > 0 or glancing_blows.length > 0
+	return misses if near_misses.length == 0 and glancing_blows.length == 0
 	return nil
 end
 
@@ -124,12 +124,13 @@ def miss_hunter()
 			miss_hash[planet[:owner]] = misses if misses
 		end
 	end
-	universe do |pt|
-		miss_hash.each do |planet, misses|
-			possibles[planet].push(pt) if full_miss(pt, misses)
-		end
-	end 
-	possibles.each { |planet, pos| puts "#{planet}: #{pos.length}" }
+	#universe do |pt|
+	#	miss_hash.each do |planet, misses|
+	#		possibles[planet].push(pt) if full_miss(pt, misses)
+	#	end
+	#end 
+	#possibles.each { |planet, pos| puts "#{planet}: #{pos.length}" }
+	miss_hash.each { |k,v| puts "#{k}: #{v.length}" }
 end
 
 def Main()
