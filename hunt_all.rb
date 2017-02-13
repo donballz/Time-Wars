@@ -6,7 +6,7 @@ require_relative 'Spreadsheet.rb'
 
 # Values specfic to planet
 Planet_info = [ { owner: 'BruteForce', planet: 'BFTP', alive: 0 },
-				{ owner: 'Doctor Who', planet: 'DWHO', alive: 1 },
+				{ owner: 'Doctor Who', planet: 'DWHO', alive: 0 },
 				{ owner: 'Bingboing', planet: '4DTS', alive: 0 },
 				{ owner: 'ElDucky', planet: 'SMPR', alive: 0 },
 				{ owner: 'Kangaz wit Attitude', planet: 'WF69', alive: 1 },
@@ -20,7 +20,7 @@ Planet_info = [ { owner: 'BruteForce', planet: 'BFTP', alive: 0 },
 				{ owner: 'soyleche', planet: 'SOYL', alive: 0 }]
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201601_round09.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201601_round11.xlsx')
 X = 4
 Y = 5
 Z = 6
@@ -133,8 +133,8 @@ def miss_hunter()
 end
 
 def Main()
-	#hunt_all()
-	miss_hunter()
+	hunt_all()
+	#miss_hunter()
 end
 
 now = Time.now
