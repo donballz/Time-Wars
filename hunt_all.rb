@@ -124,13 +124,12 @@ def miss_hunter()
 			miss_hash[planet[:owner]] = misses if misses
 		end
 	end
-	#universe do |pt|
-	#	miss_hash.each do |planet, misses|
-	#		possibles[planet].push(pt) if full_miss(pt, misses)
-	#	end
-	#end 
-	#possibles.each { |planet, pos| puts "#{planet}: #{pos.length}" }
-	miss_hash.each { |k,v| puts "#{k}: #{v.length}" }
+	universe do |pt|
+		miss_hash.each do |planet, misses|
+			possibles[planet].push(pt) if full_miss(pt, misses)
+		end
+	end 
+	possibles.each { |planet, pos| puts "#{planet}: #{pos.length}" }
 end
 
 def Main()
