@@ -20,7 +20,7 @@ Planet_info = [ { owner: 'BruteForce', planet: 'BFTP', alive: 0 },
 				{ owner: 'soyleche', planet: 'SOYL', alive: 0 }]
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201601_round11.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201601_round12.xlsx')
 X = 4
 Y = 5
 Z = 6

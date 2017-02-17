@@ -9,7 +9,7 @@ PLANET = 'LILG'
 OWNER = 'Stillgreen'
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201601_round11.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201601_round12.xlsx')
 X = 4
 Y = 5
 Z = 6
@@ -52,7 +52,16 @@ def Main()
 	#nm1 = Point4D.new(22,30,91,14)
 	#nm1 = Point4D.new(14,26,79,28)
 	nm1 = Point4D.new(20,22,87,24)
+	nm2 = Point4D.new(26,28,88,16)
+	nm3 = Point4D.new(26,22,83,22)
+	nm4 = Point4D.new(25,23,88,22)
+	nm5 = Point4D.new(24,22,93,16)
+
 	possible = nm1.point_set(10)
+	possible = nm2.within_set(possible, 10 ,3)
+	possible = nm3.within_set(possible, 10 ,3)
+	possible = nm4.within_set(possible, 10 ,3)
+	possible = nm5.within_set(possible, 10 ,3)
 	puts possible.length
 	glancing_blows.each { |pt| possible = pt.within_set(possible, 30, 10) }
 	puts possible.length
