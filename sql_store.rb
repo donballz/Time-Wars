@@ -2,7 +2,6 @@ require 'mysql'
 require 'yaml'
 require_relative 'CONSTANTS.rb'
 require_relative 'Point4D.rb'
-require_relative 'hunt_dwho.rb'
 
 # SQL Code to create the template
 #USE time;
@@ -55,15 +54,3 @@ def fr_sql(table)
 	end
 	return output
 end
-
-def Testing()
-	#misses = planet_data(PLANET, 'X')
-	#to_sql(misses, PLANET)
-	misses = fr_sql(PLANET)
-	misses.each { |m| puts m }
-	puts misses.length
-end
-
-now = Time.now
-Testing()
-puts "Run time: #{Time.now - now}"
