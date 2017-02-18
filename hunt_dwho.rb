@@ -9,7 +9,7 @@ PLANET = 'DWHO'
 OWNER = 'Doctor Who'
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201601_round06.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201601_round12.xlsx')
 X = 4
 Y = 5
 Z = 6
@@ -76,6 +76,6 @@ def Main()
 	end
 end
 
-now = Time.now
-Main()
-puts "Run time: #{Time.now - now}"
+#now = Time.now
+#Main()
+#puts "Run time: #{Time.now - now}"

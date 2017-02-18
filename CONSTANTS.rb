@@ -1,0 +1,6 @@
+SRVR = 'Donalds-Mini.hsd1.in.comcast.net'
+USER = 'ruby'
+PSWD = 'Rubycon1$'
+PATH = '/Users/donald/Dropbox/Time Wars/yaml/'
+EXCL = '/Users/donald/Dropbox/Time Wars/excel/'
+SCMA = 'time'
