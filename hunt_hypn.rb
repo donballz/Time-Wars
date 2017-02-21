@@ -110,7 +110,7 @@ def miss_hunter()
 	possible = []
 	misses = misses_only(PLANET, OWNER)
 	universe {|pt| possible.push(pt) if full_miss(pt, misses)} if misses
-	to_sql(possibles, PLANET)
+	to_sql(possible, PLANET)
 end
 
 def Main()
