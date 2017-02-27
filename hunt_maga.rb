@@ -104,6 +104,29 @@ def full_miss(point, misses)
 	return true
 end
 
+def unzipper()
+	# helper function for unzip_sql
+	(-1..0).each do |i| 
+		(-1..0).each do |j| 
+			(-1..0).each do |k| 
+				(-1..0).each do |l|
+					yield Point4D.new(i, j, k, l)
+				end
+			end
+		end
+	end
+end
+
+def unzip_sql(table)
+	# takes table of "zipped" (even only) points and generates full list of points
+	possible = []
+	zipped = fr_sql(table)
+	zipped.each do |z|
+		unzipper { |u| possible.push(z + u) }
+	end
+	return possible
+end
+
 def miss_hunter()
 	# looks for planets without useful info -- slow
 	possible = []
@@ -122,7 +145,9 @@ end
 
 def Main()
 	#hunt_all()
-	miss_hunter()
+	#miss_hunter()
+	pos = unzip_sql(PLANET)
+	puts pos.length
 end
 
 now = Time.now

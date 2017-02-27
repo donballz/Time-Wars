@@ -39,6 +39,11 @@ class Point4D
 		@x == pt.x and @y == pt.y and @z == pt.z and @t == pt.t
 	end
 	
+	def +(pt)
+		# adds two points together
+		return Point4D.new(self.x + pt.x, self.y + pt.y, self.z + pt.z, self.t + pt.t)
+	end
+	
 	def dist(pt2)
 		# gives distance between any two points
 		((@x - pt2.x)**2 + (@y - pt2.y)**2 + (@z - pt2.z)**2 + (@t - pt2.t)**2)**0.5

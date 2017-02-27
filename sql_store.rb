@@ -42,7 +42,7 @@ def fr_sql(table)
 		con.query("USE #{SCMA}")
 		rows = con.query("SELECT * FROM #{table}")
 		rows.each_hash do |row|
-			output.push(Point4D.new(row['X'], row['Y'], row['Z'], row['T']))
+			output.push(Point4D.new(row['X'].to_i, row['Y'].to_i, row['Z'].to_i, row['T'].to_i))
 		end
 		
 	rescue Mysql::Error => e
