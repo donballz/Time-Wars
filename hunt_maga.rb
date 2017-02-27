@@ -6,12 +6,11 @@ require_relative 'sql_store.rb'
 # first document to attempt pulling data from spreadsheet
 
 # Values specfic to planet
-# Values specfic to planet
 PLANET = 'MAGA'
 OWNER = 'Werewolf'
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201601_round12.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201601_round16.xlsx')
 X = 4
 Y = 5
 Z = 6
@@ -109,7 +108,9 @@ def miss_hunter()
 	# looks for planets without useful info -- slow
 	possible = []
 	misses = misses_only(PLANET, OWNER)
-	universe {|pt| possible.push(pt) if full_miss(pt, misses)} if misses
+	# searching every other point will cut search area by factor of 16. 
+	# All points not searched are within 1 of a searched point
+	universe(2) {|pt| possible.push(pt) if full_miss(pt, misses)} if misses
 	to_sql(possible, PLANET)
 end
 
