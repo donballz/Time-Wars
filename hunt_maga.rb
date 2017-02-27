@@ -110,8 +110,14 @@ def miss_hunter()
 	misses = misses_only(PLANET, OWNER)
 	# searching every other point will cut search area by factor of 16. 
 	# All points not searched are within 1 of a searched point
-	universe(2) {|pt| possible.push(pt) if full_miss(pt, misses)} if misses
-	to_sql(possible, PLANET)
+	if misses
+		puts 'entering universe'
+		universe(2) {|pt| possible.push(pt) if full_miss(pt, misses)} 
+		puts "writing #{possible.length} points  to #{PLANET}"
+		to_sql(possible, PLANET)
+	else
+		puts 'please use available non-miss data'
+	end
 end
 
 def Main()
