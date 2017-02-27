@@ -1,6 +1,7 @@
 require_relative 'common_funcs.rb'
 require_relative 'Point4D.rb'
 require_relative 'Spreadsheet.rb'
+require_relative 'sql_store.rb'
 
 # first document to attempt pulling data from spreadsheet
 
@@ -48,6 +49,62 @@ def planet_data(planet_name, owner, status)
 	return misses
 end
 
+def misses_only(planet, owner)
+	# returns miss list if there is no solid info on the planet
+	misses = planet_data(planet, owner, 'X')
+	glancing_blows = planet_data(planet, owner, 'G')
+	near_misses = planet_data(planet, owner, 'N')
+	return misses if near_misses.length == 0 and glancing_blows.length == 0
+	return nil
+end
+
+def full_miss(point, misses)
+	# returns true if point outside 30 of all misses
+	misses.each { |pt| return false if pt.dist(point) < 30 }
+	return true
+end
+
+def unzipper()
+	# helper function for unzip_sql
+	(-1..1).each do |i| 
+		(-1..1).each do |j| 
+			(-1..1).each do |k| 
+				(-1..1).each do |l|
+					yield Point4D.new(i, j, k, l)
+				end
+			end
+		end
+	end
+end
+
+def unzip_sql(table)
+	# takes table of "zipped" (even only) points and generates full list of points
+	possible = []
+	zipped = fr_sql(table)
+	zipped.each do |z|
+		unzipper { |u| possible.push(z + u) }
+	end
+	return possible
+end
+
+def miss_hunter(planet, owner)
+	# looks for planets without useful info -- slow
+	possible = []
+	misses = misses_only(planet, owner)
+	# searching every other point will cut search area by factor of 16. 
+	# All points not searched are within 1 of a searched point
+	# zip 2 takes 2.5 hours and is 1.6M points on disk. unpacking takes 90 seconds
+	# zip 3 takes 17 minutes and is 330K points on disk. unpacking takes 77 seconds!
+	if misses
+		universe(3) {|pt| possible.push(pt) if full_miss(pt, misses)} 
+		puts "writing #{possible.length} points  to #{planet} in zip-3"
+		to_sql(possible, planet)
+	else
+		puts 'please use available non-miss data'
+	end
+	return possible
+end
+
 def hunt(planet, owner)
 	# hunts for given planet, returns set of possible points
 	misses = planet_data(planet, owner, 'X')
@@ -59,7 +116,7 @@ def hunt(planet, owner)
 		possible = glancing_blows[0].point_set(30)
 	else
 		#puts "ERROR: No definite data found"
-		return []
+		return miss_hunter(planet, owner)
 	end
 	glancing_blows.each { |pt| possible = pt.within_set(possible, 30, 10) }
 	near_misses.each { |pt| possible = pt.within_set(possible, 10 ,3) }
@@ -97,39 +154,6 @@ def hunt_all()
 		volley_generation(v)
 	end
 	return nil
-end
-
-def misses_only(planet, owner)
-	# returns miss list if there is no solid info on the planet
-	misses = planet_data(planet, owner, 'X')
-	glancing_blows = planet_data(planet, owner, 'G')
-	near_misses = planet_data(planet, owner, 'N')
-	return misses if near_misses.length == 0 and glancing_blows.length == 0
-	return nil
-end
-
-def full_miss(point, misses)
-	# returns true if point outside 30 of all misses
-	misses.each { |pt| return false if pt.dist(point) < 30 }
-	return true
-end
-
-def miss_hunter()
-	# looks for planets without useful info -- slow
-	miss_hash = Hash.new()
-	possibles = Hash.new([])
-	Planet_info.each do |planet|
-		if planet[:alive] == 1
-			misses = misses_only(planet[:planet], planet[:owner])
-			miss_hash[planet[:owner]] = misses if misses
-		end
-	end
-	universe do |pt|
-		miss_hash.each do |planet, misses|
-			possibles[planet].push(pt) if full_miss(pt, misses)
-		end
-	end 
-	possibles.each { |planet, pos| puts "#{planet}: #{pos.length}" }
 end
 
 def Main()
