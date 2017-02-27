@@ -106,10 +106,10 @@ end
 
 def unzipper()
 	# helper function for unzip_sql
-	(-1..0).each do |i| 
-		(-1..0).each do |j| 
-			(-1..0).each do |k| 
-				(-1..0).each do |l|
+	(-1..1).each do |i| 
+		(-1..1).each do |j| 
+			(-1..1).each do |k| 
+				(-1..1).each do |l|
 					yield Point4D.new(i, j, k, l)
 				end
 			end
@@ -133,9 +133,11 @@ def miss_hunter()
 	misses = misses_only(PLANET, OWNER)
 	# searching every other point will cut search area by factor of 16. 
 	# All points not searched are within 1 of a searched point
+	# zip 2 takes 2.5 hours and is 1.6M points on disk. unpacking takes 90 seconds
+	# zip 3 takes 17 minutes and is 330K points on disk. unpacking takes 77 seconds!
 	if misses
 		puts 'entering universe'
-		universe(2) {|pt| possible.push(pt) if full_miss(pt, misses)} 
+		universe(3) {|pt| possible.push(pt) if full_miss(pt, misses)} 
 		puts "writing #{possible.length} points  to #{PLANET}"
 		to_sql(possible, PLANET)
 	else

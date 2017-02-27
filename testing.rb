@@ -5,16 +5,16 @@ require_relative 'Spreadsheet.rb'
 glance = Point4D.new(-18,17,-49,-43)
 actual = Point4D.new(-35,14,-42,-66)
 
-puts glance.x
-puts glance.y
-puts glance.z
-puts glance.t
+#puts glance.x
+#puts glance.y
+#puts glance.z
+#puts glance.t
 
-possible = glance.point_set(30)
+#possible = glance.point_set(30)
 
-possible.each { |pt| puts pt if pt == actual }
+#possible.each { |pt| puts pt if pt == actual }
 
-puts actual.dist(glance)
+#puts actual.dist(glance)
 
 #range = 30
 #(glance.x - range..glance.x + range).each do |i|
@@ -27,3 +27,18 @@ puts actual.dist(glance)
 #		end
 #	end
 #end
+
+def unzipper()
+	# helper function for unzip_sql
+	(-1..1).each do |i| 
+		(-1..1).each do |j| 
+			(-1..1).each do |k| 
+				(-1..1).each do |l|
+					puts Point4D.new(i, j, k, l)
+				end
+			end
+		end
+	end
+end
+
+unzipper()
