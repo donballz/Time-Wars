@@ -11,7 +11,7 @@ Planet_info = [ { owner: 'BruteForce', planet: 'BFTP', alive: 0 },
 				{ owner: 'ElDucky', planet: 'SMPR', alive: 0 },
 				{ owner: 'Kangaz wit Attitude', planet: 'WF69', alive: 1 },
 				{ owner: 'Meshuga', planet: 'MIZ5', alive: 0 },
-				{ owner: 'Aractuary', planet: 'HYPN', alive: 1 },
+				{ owner: 'Aractuary', planet: 'HYPN', alive: 0 },
 				{ owner: 'Vorian Atreides', planet: 'TDHM', alive: 0 },
 				{ owner: 'Stillgreen', planet: 'LILG', alive: 0 },
 				{ owner: 'Werewolf', planet: 'MAGA', alive: 1 },
@@ -20,7 +20,7 @@ Planet_info = [ { owner: 'BruteForce', planet: 'BFTP', alive: 0 },
 				{ owner: 'soyleche', planet: 'SOYL', alive: 0 }]
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201601_round13.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201601_round15.xlsx')
 X = 4
 Y = 5
 Z = 6

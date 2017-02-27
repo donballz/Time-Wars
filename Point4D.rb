@@ -2,13 +2,13 @@ require_relative 'common_funcs.rb'
 
 RADIUS = 100
 
-def universe
+def universe(step=1)
 	# returns every possible point in 100-radius hypersphere
 	r = RADIUS
-	(-r..r).each do |i| 
-		(-r..r).each do |j| 
-			(-r..r).each do |k| 
-				(-r..r).each do |l|
+	(-r..r).step(step) do |i| 
+		(-r..r).step(step) do |j| 
+			(-r..r).step(step) do |k| 
+				(-r..r).step(step) do |l|
 					if i**2 + j**2 + k**2 + l**2  <= r**2  
 						yield Point4D.new(i, j, k, l)
 					end
