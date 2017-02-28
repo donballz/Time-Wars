@@ -15,13 +15,13 @@ Planet_info = [ { owner: 'BruteForce', planet: 'BFTP', alive: 0 },
 				{ owner: 'Aractuary', planet: 'HYPN', alive: 0 },
 				{ owner: 'Vorian Atreides', planet: 'TDHM', alive: 0 },
 				{ owner: 'Stillgreen', planet: 'LILG', alive: 0 },
-				{ owner: 'Werewolf', planet: 'MAGA', alive: 1 },
+				{ owner: 'Werewolf', planet: 'MAGA', alive: 0 },
 				{ owner: 'E. Blackadder', planet: 'DEBB', alive: 0 },
 				{ owner: 'vividox', planet: 'REEK', alive: 0 },
 				{ owner: 'soyleche', planet: 'SOYL', alive: 0 }]
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201601_round15.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201601_round17.xlsx')
 X = 4
 Y = 5
 Z = 6
@@ -97,7 +97,7 @@ def miss_hunter(planet, owner)
 	# zip 3 takes 17 minutes and is 330K points on disk. unpacking takes 77 seconds!
 	if misses
 		universe(3) {|pt| possible.push(pt) if full_miss(pt, misses)} 
-		puts "writing #{possible.length} points  to #{planet} in zip-3"
+		puts "writing #{possible.length} points to #{planet} in zip-3"
 		to_sql(possible, planet)
 	else
 		puts 'please use available non-miss data'
@@ -127,12 +127,13 @@ end
 def volley_generation(possible)
 	# generates random volleys and checks against coverage of possible space for planet
 	(0...20).each do |i|
-		# sample of 10, within 10 and 3
-		sample, nm, hit = get_volley(possible, 10, 10, 3) 
+		# sample of 10, within 30, 10 and 3
+		sample, metrics = get_volley3(possible, 10, [30, 10, 3]) 
 	
 		puts sample
-		puts "#{(100*nm).round(2)}% points in near miss range"
-		puts "#{(100*hit).round(2)}% points in hit range"
+		puts "#{(100*metrics[0]).round(2)}% points in glancing blow range"
+		puts "#{(100*metrics[1]).round(2)}% points in near miss range"
+		puts "#{(100*metrics[2]).round(2)}% points in hit range"
 		puts "out of #{possible.length} total points"
 	end
 end
