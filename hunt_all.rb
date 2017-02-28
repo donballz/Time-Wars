@@ -3,8 +3,6 @@ require_relative 'Point4D.rb'
 require_relative 'Spreadsheet.rb'
 require_relative 'sql_store.rb'
 
-# first document to attempt pulling data from spreadsheet
-
 # Values specfic to planet
 Planet_info = [ { owner: 'BruteForce', planet: 'BFTP', alive: 0 },
 				{ owner: 'Doctor Who', planet: 'DWHO', alive: 0 },
@@ -22,10 +20,15 @@ Planet_info = [ { owner: 'BruteForce', planet: 'BFTP', alive: 0 },
 
 # Values common to all files of this type
 Public_data = Spreadsheet.new(EXCL + 'tw_201601_round17.xlsx')
+# Excel column numbers
 X = 4
 Y = 5
 Z = 6
 T = 7
+# Blast ranges
+HT = 3
+NM = 10
+GB = 30
 
 def planet_data(planet_name, owner, status)
 	# gets data for planet given by status flag
@@ -60,7 +63,7 @@ end
 
 def full_miss(point, misses)
 	# returns true if point outside 30 of all misses
-	misses.each { |pt| return false if pt.dist(point) < 30 }
+	misses.each { |pt| return false if pt.dist(point) < GB }
 	return true
 end
 
@@ -111,29 +114,38 @@ def hunt(planet, owner)
 	glancing_blows = planet_data(planet, owner, 'G')
 	near_misses = planet_data(planet, owner, 'N')
 	if near_misses.length > 0 then
-		possible = near_misses[0].point_set(10)
+		possible = near_misses[0].point_set(NM)
 	elsif glancing_blows.length > 0 then
-		possible = glancing_blows[0].point_set(30)
+		possible = glancing_blows[0].point_set(GB)
 	else
 		#puts "ERROR: No definite data found"
 		return miss_hunter(planet, owner)
 	end
-	glancing_blows.each { |pt| possible = pt.within_set(possible, 30, 10) }
-	near_misses.each { |pt| possible = pt.within_set(possible, 10 ,3) }
-	misses.each { |pt| possible = pt.without_set(possible, 30) }
+	glancing_blows.each { |pt| possible = pt.within_set(possible, GB, NM) }
+	near_misses.each { |pt| possible = pt.within_set(possible, NM ,HT) }
+	misses.each { |pt| possible = pt.without_set(possible, GB) }
 	return possible
 end
 
 def volley_generation(possible)
 	# generates random volleys and checks against coverage of possible space for planet
-	(0...20).each do |i|
+	n = 20 # number of volleys to generate
+	m = 3  # number of volleys to print
+	volleys = {}
+	ranks = []
+	(0...n).each do |i|
 		# sample of 10, within 30, 10 and 3
-		sample, metrics = get_volley3(possible, 10, [30, 10, 3]) 
-	
-		puts sample
-		puts "#{(100*metrics[0]).round(2)}% points in glancing blow range"
-		puts "#{(100*metrics[1]).round(2)}% points in near miss range"
-		puts "#{(100*metrics[2]).round(2)}% points in hit range"
+		sample, metrics = get_volley3(possible, 10, [GB, NM, HT])
+		tot =  metrics.reduce(0, :+) # sum of hit percetages
+		volleys[tot] = [sample, metrics]
+		ranks.push(tot)
+	end
+	ranks.sort!.reverse!
+	(0...m).each do |i|
+		puts volleys[ranks[i]][0]
+		puts "#{(100*volleys[ranks[i]][1][0]).round(2)}% points in glancing blow range"
+		puts "#{(100*volleys[ranks[i]][1][1]).round(2)}% points in near miss range"
+		puts "#{(100*volleys[ranks[i]][1][2]).round(2)}% points in hit range"
 		puts "out of #{possible.length} total points"
 	end
 end
