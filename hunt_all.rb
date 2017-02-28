@@ -13,7 +13,7 @@ Planet_info = [ { owner: 'BruteForce', planet: 'BFTP', alive: 0 },
 				{ owner: 'Aractuary', planet: 'HYPN', alive: 0 },
 				{ owner: 'Vorian Atreides', planet: 'TDHM', alive: 0 },
 				{ owner: 'Stillgreen', planet: 'LILG', alive: 0 },
-				{ owner: 'Werewolf', planet: 'MAGA', alive: 0 },
+				{ owner: 'Werewolf', planet: 'MAGA', alive: 1 },
 				{ owner: 'E. Blackadder', planet: 'DEBB', alive: 0 },
 				{ owner: 'vividox', planet: 'REEK', alive: 0 },
 				{ owner: 'soyleche', planet: 'SOYL', alive: 0 }]
@@ -118,8 +118,11 @@ def hunt(planet, owner)
 	elsif glancing_blows.length > 0 then
 		possible = glancing_blows[0].point_set(GB)
 	else
-		#puts "ERROR: No definite data found"
-		return miss_hunter(planet, owner)
+		if exists(planet) # checks sql server for table
+			possible = fr_sql(planet)
+		else
+			return miss_hunter(planet, owner)
+		end
 	end
 	glancing_blows.each { |pt| possible = pt.within_set(possible, GB, NM) }
 	near_misses.each { |pt| possible = pt.within_set(possible, NM ,HT) }

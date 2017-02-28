@@ -54,3 +54,22 @@ def fr_sql(table)
 	end
 	return output
 end
+
+def exists(table)
+	# returns true if given table exists
+	begin
+		con = Mysql.new SRVR, USER, PSWD
+		rows = con.query("
+					SELECT count(*) as CNT
+					FROM information_schema.TABLES
+					WHERE (TABLE_SCHEMA = 'time') AND (TABLE_NAME = '#{table}')")
+		
+	rescue Mysql::Error => e
+		puts e.errno
+		puts e.error
+
+	ensure
+		con.close if con
+		rows.each_hash { |row| return row['CNT'].to_i > 0 }
+	end
+end

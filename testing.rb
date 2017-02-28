@@ -1,6 +1,7 @@
 require_relative 'common_funcs.rb'
 require_relative 'Point4D.rb'
 require_relative 'Spreadsheet.rb'
+require_relative 'sql_store.rb'
 
 glance = Point4D.new(-18,17,-49,-43)
 actual = Point4D.new(-35,14,-42,-66)
@@ -41,4 +42,8 @@ def unzipper()
 	end
 end
 
-unzipper()
+#unzipper()
+
+puts exists('MAGA')
+puts exists('DWHO')
+puts exists('ZERO')
