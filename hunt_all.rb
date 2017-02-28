@@ -127,6 +127,7 @@ def hunt(planet, owner)
 	glancing_blows.each { |pt| possible = pt.within_set(possible, GB, NM) }
 	near_misses.each { |pt| possible = pt.within_set(possible, NM ,HT) }
 	misses.each { |pt| possible = pt.without_set(possible, GB) }
+	to_sql(possible)
 	return possible
 end
 
