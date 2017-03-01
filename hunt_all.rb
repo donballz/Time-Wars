@@ -8,7 +8,7 @@ Planet_info = [ { owner: 'BruteForce', planet: 'BFTP', alive: 0 },
 				{ owner: 'Doctor Who', planet: 'DWHO', alive: 0 },
 				{ owner: 'Bingboing', planet: '4DTS', alive: 0 },
 				{ owner: 'ElDucky', planet: 'SMPR', alive: 0 },
-				{ owner: 'Kangaz wit Attitude', planet: 'WF69', alive: 1 },
+				{ owner: 'Kangaz wit Attitude', planet: 'WF69', alive: 0 },
 				{ owner: 'Meshuga', planet: 'MIZ5', alive: 0 },
 				{ owner: 'Aractuary', planet: 'HYPN', alive: 0 },
 				{ owner: 'Vorian Atreides', planet: 'TDHM', alive: 0 },
@@ -127,7 +127,7 @@ def hunt(planet, owner)
 	glancing_blows.each { |pt| possible = pt.within_set(possible, GB, NM) }
 	near_misses.each { |pt| possible = pt.within_set(possible, NM ,HT) }
 	misses.each { |pt| possible = pt.without_set(possible, GB) }
-	to_sql(possible)
+	to_sql(possible, planet)
 	return possible
 end
 
@@ -175,7 +175,7 @@ end
 
 def Main()
 	hunt_all()
-	#miss_hunter()
+	#miss_hunter('MAGA', 'Werewolf')
 end
 
 now = Time.now

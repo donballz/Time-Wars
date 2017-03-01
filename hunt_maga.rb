@@ -10,7 +10,7 @@ PLANET = 'MAGA'
 OWNER = 'Werewolf'
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201601_round16.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201601_round17.xlsx')
 X = 4
 Y = 5
 Z = 6
@@ -147,9 +147,9 @@ end
 
 def Main()
 	#hunt_all()
-	#miss_hunter()
-	pos = unzip_sql(PLANET)
-	puts pos.length
+	miss_hunter()
+	#pos = unzip_sql(PLANET)
+	#puts pos.length
 end
 
 now = Time.now
