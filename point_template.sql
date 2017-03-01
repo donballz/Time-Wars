@@ -1,0 +1,8 @@
+USE time;
+DROP TABLE IF EXISTS template;
+
+CREATE TABLE IF NOT EXISTS template (
+X INT,
+Y INT,
+Z INT,
+T INT);
