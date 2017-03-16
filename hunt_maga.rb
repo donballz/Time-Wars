@@ -10,7 +10,7 @@ PLANET = 'MAGA'
 OWNER = 'Werewolf'
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201601_round17.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'opening_volley_test.xlsx')
 X = 4
 Y = 5
 Z = 6

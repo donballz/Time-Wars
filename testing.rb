@@ -47,3 +47,7 @@ end
 puts exists('MAGA')
 puts exists('DWHO')
 puts exists('ZERO')
+
+puts -5.sign
+puts 10.sign
+puts 0.sign

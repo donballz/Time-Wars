@@ -1,4 +1,4 @@
-SRVR = 'Donalds-Mini.hsd1.in.comcast.net'
+SRVR = 'Donalds-Mac-mini.local'
 USER = 'ruby'
 PSWD = 'Rubycon1$'
 PATH = '/Users/donald/Dropbox/Time Wars/yaml/'

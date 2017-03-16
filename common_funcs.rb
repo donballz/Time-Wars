@@ -10,3 +10,10 @@ def read(fname)
 	# reads yaml file to object
 	return YAML.load_file(PATH + "#{fname}.yml")
 end
+
+class Fixnum
+	def sign
+		return -1 if self < 0
+		return 1
+	end
+end

@@ -179,5 +179,5 @@ def Main()
 end
 
 now = Time.now
-Main()
+#Main()
 puts "Run time: #{Time.now - now}"
