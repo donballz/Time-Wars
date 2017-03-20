@@ -4,22 +4,19 @@ require_relative 'Spreadsheet.rb'
 require_relative 'sql_store.rb'
 
 # Values specfic to planet
-Planet_info = [ { owner: 'BruteForce', planet: 'BFTP', alive: 0 },
-				{ owner: 'Doctor Who', planet: 'DWHO', alive: 0 },
-				{ owner: 'Bingboing', planet: '4DTS', alive: 0 },
-				{ owner: 'ElDucky', planet: 'SMPR', alive: 0 },
-				{ owner: 'Kangaz wit Attitude', planet: 'WF69', alive: 0 },
-				{ owner: 'Meshuga', planet: 'MIZ5', alive: 0 },
-				{ owner: 'Aractuary', planet: 'HYPN', alive: 0 },
-				{ owner: 'Vorian Atreides', planet: 'TDHM', alive: 0 },
-				{ owner: 'Stillgreen', planet: 'LILG', alive: 0 },
-				{ owner: 'Werewolf', planet: 'MAGA', alive: 1 },
-				{ owner: 'E. Blackadder', planet: 'DEBB', alive: 0 },
-				{ owner: 'vividox', planet: 'REEK', alive: 0 },
-				{ owner: 'soyleche', planet: 'SOYL', alive: 0 }]
+Planet_info = [ { owner: 'Meshuga', planet: 'PL_1', alive: 0 }
+				{ owner: 'soyleche', planet: 'PL_2', alive: 0 }
+				{ owner: 'Vorian Atreides', planet: 'PL_3', alive: 1 }
+				{ owner: 'Werewolf', planet: 'PL_4', alive: 0 }
+				{ owner: 'Meshuga', planet: 'PL_5', alive: 0 }
+				{ owner: 'soyleche', planet: 'PL_6', alive: 0 }
+				{ owner: 'Vorian Atreides', planet: 'PL_7', alive: 0 }
+				{ owner: 'Werewolf', planet: 'PL_8', alive: 0 }
+				{ owner: 'Lifeless', planet: 'PL_9', alive: 0 }
+				{ owner: 'Lifeless', planet: 'PL_10', alive: 0 }]
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201601_round17.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201703_round02.xlsx')
 # Excel column numbers
 X = 4
 Y = 5
@@ -179,5 +176,5 @@ def Main()
 end
 
 now = Time.now
-#Main()
+Main()
 puts "Run time: #{Time.now - now}"
