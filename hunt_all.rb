@@ -4,19 +4,19 @@ require_relative 'Spreadsheet.rb'
 require_relative 'sql_store.rb'
 
 # Values specfic to planet
-Planet_info = [ { owner: 'Meshuga', planet: 'PL_1', alive: 0 },
-				{ owner: 'soyleche', planet: 'PL_2', alive: 0 },
-				{ owner: 'Vorian Atreides', planet: 'PL_3', alive: 1 },
-				{ owner: 'Werewolf', planet: 'PL_4', alive: 0 },
-				{ owner: 'Meshuga', planet: 'PL_5', alive: 0 },
-				{ owner: 'soyleche', planet: 'PL_6', alive: 0 },
-				{ owner: 'Vorian Atreides', planet: 'PL_7', alive: 0 },
-				{ owner: 'Werewolf', planet: 'PL_8', alive: 0 },
-				{ owner: 'Lifeless', planet: 'PL_9', alive: 0 },
-				{ owner: 'Lifeless', planet: 'PL_10', alive: 0 }]
+Planet_info = [ { owner: 'Planet 1', planet: 'PL_1', alive: 0 },
+				{ owner: 'Planet 2', planet: 'PL_2', alive: 0 },
+				{ owner: 'Planet 3', planet: 'PL_3', alive: 1 },
+				{ owner: 'Planet 4', planet: 'PL_4', alive: 0 },
+				{ owner: 'Planet 5', planet: 'PL_5', alive: 0 },
+				{ owner: 'Planet 6', planet: 'PL_6', alive: 0 },
+				{ owner: 'Planet 7', planet: 'PL_7', alive: 0 },
+				{ owner: 'Planet 8', planet: 'PL_8', alive: 0 },
+				{ owner: 'Planet 9', planet: 'PL_9', alive: 0 },
+				{ owner: 'Planet X', planet: 'PL_10', alive: 0 }]
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201703_round02.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201703_round03.xlsx')
 # Excel column numbers
 X = 4
 Y = 5
