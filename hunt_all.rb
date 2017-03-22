@@ -60,7 +60,7 @@ end
 
 def full_miss(point, misses)
 	# returns true if point outside 30 of all misses
-	misses.each { |pt| return false if pt.dist(point) < GB }
+	misses.each { |pt| return false if pt.dist(point) <= GB }
 	return true
 end
 
