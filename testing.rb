@@ -45,16 +45,16 @@ end
 #unzipper()
 
 whovol = [
-	Point4D.new(23,-63,30,66),
-	Point4D.new(24,-64,35,57),
-	Point4D.new(21,-64,30,59),
-	Point4D.new(24,-63,36,62),
-	Point4D.new(25,-67,30,61),
-	Point4D.new(21,-62,29,62),
-	Point4D.new(23,-62,33,64),
-	Point4D.new(25,-66,34,59),
-	Point4D.new(23,-64,28,63),
-	Point4D.new(24,-65,32,62)]
+Point4D.new(24, -64, 33, 62),
+Point4D.new(23, -64, 29, 63),
+Point4D.new(25, -66, 34, 59),
+Point4D.new(23, -62, 34, 64),
+Point4D.new(25, -67, 30, 62),
+Point4D.new(21, -64, 31, 60),
+Point4D.new(24, -63, 36, 60),
+Point4D.new(22, -63, 26, 62),
+Point4D.new(22, -61, 30, 65),
+Point4D.new(24, -65, 34, 56)]
 	
 possible = fr_sql('PL_3')
 
