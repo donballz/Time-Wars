@@ -10,10 +10,10 @@ Planet_info = [ { owner: 'Planet 1', planet: 'PL_1', alive: 0 },
 				{ owner: 'Planet 4', planet: 'PL_4', alive: 0 },
 				{ owner: 'Planet 5', planet: 'PL_5', alive: 0 },
 				{ owner: 'Planet 6', planet: 'PL_6', alive: 0 },
-				{ owner: 'Planet 7', planet: 'PL_7', alive: 0 },
+				{ owner: 'Planet 7', planet: 'PL_7', alive: 1 },
 				{ owner: 'Planet 8', planet: 'PL_8', alive: 0 },
 				{ owner: 'Planet 9', planet: 'PL_9', alive: 0 },
-				{ owner: 'Planet X', planet: 'PL_10', alive: 0 }]
+				{ owner: 'Planet X', planet: 'PL_X', alive: 1 }]
 
 # Values common to all files of this type
 Public_data = Spreadsheet.new(EXCL + 'tw_201703_round03.xlsx')

@@ -44,10 +44,41 @@ end
 
 #unzipper()
 
-puts exists('MAGA')
-puts exists('DWHO')
-puts exists('ZERO')
+whovol = [
+	Point4D.new(23,-63,30,66),
+	Point4D.new(24,-64,35,57),
+	Point4D.new(21,-64,30,59),
+	Point4D.new(24,-63,36,62),
+	Point4D.new(25,-67,30,61),
+	Point4D.new(21,-62,29,62),
+	Point4D.new(23,-62,33,64),
+	Point4D.new(25,-66,34,59),
+	Point4D.new(23,-64,28,63),
+	Point4D.new(24,-65,32,62)]
+	
+possible = fr_sql('PL_3')
 
-puts -5.sign
-puts 10.sign
-puts 0.sign
+def get_volley_temp(set, sample, n, lim_set)
+	# creates random sample of size n and checks it against the set's points
+	# returns the sample and the percentage of points in the set it hits in an array
+	total_pts = 0.0
+	m = lim_set.length
+	lim_pts = [0] * m
+	set.each do |pt|
+		hits = [false] * m
+		sample.each do |shot| 
+			dist = shot.dist(pt)
+			(0...m).each { |i| hits[i] = true if dist <= lim_set[i] }
+		end
+		(0...m).each { |i|  lim_pts[i] += 1 if hits[i] }
+		total_pts += 1
+	end
+	return sample, lim_pts.map { |l| l / total_pts }
+end
+
+sample, metrics = get_volley_temp(possible, whovol, 10, [30, 10, 3])
+puts sample
+puts "#{(100*metrics[0]).round(2)}% points in glancing blow range"
+puts "#{(100*metrics[1]).round(2)}% points in near miss range"
+puts "#{(100*metrics[2]).round(2)}% points in hit range"
+puts "out of #{possible.length} total points"
