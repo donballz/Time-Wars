@@ -171,6 +171,31 @@ def volley_optimization(possible, current)
 	end
 end
 
+def optimize_all()
+	# runs from sql tables, gives optimization volley for all alive planets. run hunt first.
+	possibles = Hash.new()
+	Planet_info.each do |planet|
+		if planet[:alive] == 1
+			possible = fr_sql(planet[:planet])
+			puts "#{planet[:owner]}: #{possible.length}"
+			possibles[planet[:owner]] = possible if possible.length > 0
+		end
+	end
+	puts
+	puts
+	possibles.each do |k, v| 
+		puts k
+		sample = volley_optimization(v, [])
+		metrics = get_volley_def(v, sample, [GB, NM, HT])
+		puts sample
+		puts "#{(100*metrics[0]).round(2)}% points in glancing blow range"
+		puts "#{(100*metrics[1]).round(2)}% points in near miss range"
+		puts "#{(100*metrics[2]).round(2)}% points in hit range"
+		puts "out of #{v.length} total points"
+	end
+	return nil
+end
+
 def hunt_all()
 	# iterates all available information and outputs 20 guesses for each planet with info
 	possibles = Hash.new()
@@ -192,9 +217,10 @@ end
 
 def Main()
 	#hunt_all()
+	optimize_all()
 	#miss_hunter('MAGA', 'Werewolf')
-	poss = fr_sql('PL_3')
-	puts volley_optimization(poss, [])
+	#poss = fr_sql('PL_3')
+	#puts volley_optimization(poss, [])
 end
 
 now = Time.now

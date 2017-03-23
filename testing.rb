@@ -58,8 +58,8 @@ Point4D.new(24, -65, 34, 56)]
 	
 possible = fr_sql('PL_3')
 
-def get_volley_temp(set, sample, n, lim_set)
-	# creates random sample of size n and checks it against the set's points
+def get_volley_def(set, sample, lim_set)
+	# checks given sample and checks it against the set's points
 	# returns the sample and the percentage of points in the set it hits in an array
 	total_pts = 0.0
 	m = lim_set.length
@@ -76,7 +76,7 @@ def get_volley_temp(set, sample, n, lim_set)
 	return sample, lim_pts.map { |l| l / total_pts }
 end
 
-sample, metrics = get_volley_temp(possible, whovol, 10, [30, 10, 3])
+sample, metrics = get_volley_def(possible, whovol, 10, [30, 10, 3])
 puts sample
 puts "#{(100*metrics[0]).round(2)}% points in glancing blow range"
 puts "#{(100*metrics[1]).round(2)}% points in near miss range"

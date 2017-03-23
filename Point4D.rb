@@ -87,25 +87,6 @@ class Point4D
 	end
 end
 
-def get_volley(set, n, lim1, lim2)
-	# creates random sample of size n and checks it against the set's points
-	# returns the sample and the percentage of points in the set it hits
-	sample = set.sample(n)
-	total_pts, lim1_pts, lim2_pts = 0.0, 0, 0
-	set.each do |pt|
-		hit1, hit2 = false, false
-		sample.each do |shot| 
-			dist = shot.dist(pt)
-			hit1 = true if dist <= lim1
-			hit2 = true if dist <= lim2
-		end
-		lim1_pts += 1 if hit1
-		lim2_pts += 1 if hit2
-		total_pts += 1
-	end
-	return sample, lim1_pts / total_pts, lim2_pts / total_pts
-end
-
 def get_volley3(set, n, lim_set)
 	# creates random sample of size n and checks it against the set's points
 	# returns the sample and the percentage of points in the set it hits in an array
@@ -125,32 +106,22 @@ def get_volley3(set, n, lim_set)
 	return sample, lim_pts.map { |l| l / total_pts }
 end
 
-def get_volley2(set, n, lim1, lim2)
-	# selects single point randomly and eliminates points within lim1 
-	# before selecting another point to create sample of size n 
-	# and check it against the set's other points
-	# returns the sample and the percentage of points in the set it hits
-	####### Takes 5 minutes longer and offers zero improvement
-	copy = set.clone
-	sample = []
-	(1..n).each do |i|
-		single = set.sample(1)
-		set = single[0].without_set(set, lim1)
-		sample.push(single[0])
-	end
-	total_pts, lim1_pts, lim2_pts = 0.0, 0, 0
-	copy.each do |pt|
-		hit1, hit2 = false, false
+def get_volley_def(set, sample, lim_set)
+	# checks given sample and checks it against the set's points
+	# returns the percentage of points in the set it hits in an array
+	total_pts = 0.0
+	m = lim_set.length
+	lim_pts = [0] * m
+	set.each do |pt|
+		hits = [false] * m
 		sample.each do |shot| 
 			dist = shot.dist(pt)
-			hit1 = true if dist <= lim1
-			hit2 = true if dist <= lim2
+			(0...m).each { |i| hits[i] = true if dist <= lim_set[i] }
 		end
-		lim1_pts += 1 if hit1
-		lim2_pts += 1 if hit2
+		(0...m).each { |i|  lim_pts[i] += 1 if hits[i] }
 		total_pts += 1
 	end
-	return sample, lim1_pts / total_pts, lim2_pts / total_pts
+	return lim_pts.map { |l| l / total_pts }
 end
 
 # Try: choose random set check percentage of points in elducky's glancing blow
