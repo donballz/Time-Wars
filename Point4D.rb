@@ -124,7 +124,21 @@ def get_volley_def(set, sample, lim_set)
 	return lim_pts.map { |l| l / total_pts }
 end
 
-# Try: choose random set check percentage of points in elducky's glancing blow
-# 	   land within 10 and 30 of the set members. Repeat this 10-20 times and 
-# 	   choose the best option.
+
+class PointSet 
+	# class to hold set of three points so each data point of this type can be considered in total
+	ATTRS = [:x, :y, :z, :t]
+	attr_reader(*ATTRS)
+		
+	def initialize(one, two, thr)
+		@one = one
+		@two = two
+		@thr = thr
+	end
+	
+	def to_s
+		# string representation of a point
+		return @one.to_s + "\n" + @two.to_s + "\n" + @thr.to_s
+	end
+end
 

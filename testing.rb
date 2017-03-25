@@ -56,7 +56,7 @@ Point4D.new(22, -63, 26, 62),
 Point4D.new(22, -61, 30, 65),
 Point4D.new(24, -65, 34, 56)]
 	
-possible = fr_sql('PL_3')
+#possible = fr_sql('PL_3')
 
 def get_volley_def(set, sample, lim_set)
 	# checks given sample and checks it against the set's points
@@ -76,9 +76,12 @@ def get_volley_def(set, sample, lim_set)
 	return sample, lim_pts.map { |l| l / total_pts }
 end
 
-sample, metrics = get_volley_def(possible, whovol, 10, [30, 10, 3])
-puts sample
-puts "#{(100*metrics[0]).round(2)}% points in glancing blow range"
-puts "#{(100*metrics[1]).round(2)}% points in near miss range"
-puts "#{(100*metrics[2]).round(2)}% points in hit range"
-puts "out of #{possible.length} total points"
+# sample, metrics = get_volley_def(possible, whovol, 10, [30, 10, 3])
+# puts sample
+# puts "#{(100*metrics[0]).round(2)}% points in glancing blow range"
+# puts "#{(100*metrics[1]).round(2)}% points in near miss range"
+# puts "#{(100*metrics[2]).round(2)}% points in hit range"
+# puts "out of #{possible.length} total points"
+
+ps = PointSet.new(whovol[0],whovol[1],whovol[2])
+puts ps
