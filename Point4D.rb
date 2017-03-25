@@ -164,5 +164,12 @@ class Volley
 		end
 		return ('H' * hits) + ('N' * nears) + ('G' * glances) + ('X' * misses)
 	end
+	
+	def within_set(set, report)
+		# return list of points with a given distance report
+		result = []
+		set.each {|pt| result.push(pt) if self.dist(pt) == report}
+		return result
+	end
 end
 
