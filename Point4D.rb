@@ -125,7 +125,7 @@ def get_volley_def(set, sample, lim_set)
 end
 
 
-class PointSet 
+class Volley 
 	# class to hold set of three points so each data point of this type can be considered in total
 	ATTRS = [:x, :y, :z, :t]
 	attr_reader(*ATTRS)
@@ -134,11 +134,35 @@ class PointSet
 		@one = one
 		@two = two
 		@thr = thr
+		@set = [one, two, thr]
 	end
 	
 	def to_s
-		# string representation of a point
+		# string representation of a point set
 		return @one.to_s + "\n" + @two.to_s + "\n" + @thr.to_s
+	end
+	
+	def each
+		# allows user to iterate over the point set
+		@set.each { |s| yield s }
+	end
+	
+	def dist(pt)
+		# gives distance report between any two from set to given pt
+		hits, nears, glances, misses = 0, 0, 0, 0
+		@set.each do |point|
+			dist = point.dist(pt)
+			if dist <= HT
+				hits += 1
+			elsif dist <= NM
+				nears += 1
+			elsif dist <= GB
+				glances += 1
+			else
+				misses += 1
+			end
+		end
+		return ('H' * hits) + ('N' * nears) + ('G' * glances) + ('X' * misses)
 	end
 end
 

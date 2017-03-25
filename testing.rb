@@ -46,8 +46,8 @@ actual = Point4D.new(-35,14,-42,-66)
 
 whovol = [
 Point4D.new(24, -64, 33, 62),
-Point4D.new(23, -64, 29, 63),
-Point4D.new(25, -66, 34, 59),
+Point4D.new(43, -64, 29, 63),
+Point4D.new(55, -66, 34, 59),
 Point4D.new(23, -62, 34, 64),
 Point4D.new(25, -67, 30, 62),
 Point4D.new(21, -64, 31, 60),
@@ -83,5 +83,6 @@ end
 # puts "#{(100*metrics[2]).round(2)}% points in hit range"
 # puts "out of #{possible.length} total points"
 
-ps = PointSet.new(whovol[0],whovol[1],whovol[2])
-puts ps
+ps = Volley.new(whovol[0],whovol[1],whovol[2])
+ps.each { |pt| puts pt.dist(whovol[3]) }
+puts ps.dist(whovol[3])

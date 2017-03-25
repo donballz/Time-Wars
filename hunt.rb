@@ -22,10 +22,6 @@ X = 4
 Y = 5
 Z = 6
 T = 7
-# Blast ranges
-HT = 3
-NM = 10
-GB = 30
 
 def planet_data(planet_name, owner, status)
 	# gets data for planet given by status flag
