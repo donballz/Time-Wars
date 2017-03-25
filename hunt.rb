@@ -16,7 +16,7 @@ Planet_info = [ { owner: 'Planet 1', planet: 'PL_1', alive: 0 },
 				{ owner: 'Planet X', planet: 'PL_X', alive: 0 }]
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201703_round03_clean.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201703_round03.xlsx')
 # Excel column numbers
 X = 4
 Y = 5

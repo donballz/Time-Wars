@@ -63,6 +63,31 @@ class Point4D
 		return result
 	end
 	
+	def status(pt)
+		# returns letter status with from given point
+		dist = pt.dist(self)
+		if dist <= HT
+			return 'H'
+		elsif dist <= NM
+			return 'N'
+		elsif dist <= GB
+			return 'G'
+		else
+			return 'X'
+		end
+	end
+	
+	def with_status(set, status)
+		# returns list of points which have a given letter status, for volley fours
+		result = []
+		set.each do |pt| 
+			#puts "result status: #{pt.status(self)}|"
+			#puts "test status: #{pt.status(self) == status}"
+			result.push(pt) if pt.status(self) == status
+		end
+		return result
+	end
+	
 	def without_set(set, range)
 		# return list of points which fully miss the shot by distance equal to range
 		result = []

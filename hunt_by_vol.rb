@@ -6,17 +6,17 @@ require_relative 'sql_store.rb'
 # Values specfic to planet
 Planet_info = [ { owner: 'Planet 1', planet: 'PL_1', alive: 0 },
 				{ owner: 'Planet 2', planet: 'PL_2', alive: 0 },
-				{ owner: 'Planet 3', planet: 'PL_3', alive: 1 },
+				{ owner: 'Planet 3', planet: 'PL_3', alive: 0 },
 				{ owner: 'Planet 4', planet: 'PL_4', alive: 0 },
 				{ owner: 'Planet 5', planet: 'PL_5', alive: 0 },
-				{ owner: 'Planet 6', planet: 'PL_6', alive: 0 },
+				{ owner: 'Planet 6', planet: 'PL_6', alive: 1 },
 				{ owner: 'Planet 7', planet: 'PL_7', alive: 0 },
 				{ owner: 'Planet 8', planet: 'PL_8', alive: 0 },
 				{ owner: 'Planet 9', planet: 'PL_9', alive: 0 },
 				{ owner: 'Planet X', planet: 'PL_X', alive: 0 }]
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201703_round03_clean.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201703_round05_clean.xlsx')
 # Excel column numbers
 V = 2 # Volley num
 X = 4
@@ -50,6 +50,7 @@ def planet_data_full(planet_name)
 	# gets full data for planet given by hashed by distance report
 	# assumes clean data !!
 	vols = Hash.new([]) # keys are status, values are point sets
+	fours = Hash.new([]) # keys are status, values are points
 	pts = []
 	curvol = 'Volley 1'
 	loc = nil
@@ -62,15 +63,17 @@ def planet_data_full(planet_name)
 					row.each { |cell| loc = row.index(cell) if cell == planet_name }
 					first_row = false if loc
 				else
+					point = Point4D.new(row[X], row[Y], row[Z], row[T])
 					if curvol == row[V]
-						pts.push(Point4D.new(row[X], row[Y], row[Z], row[T]))
+						pts.push(point)
 						report = row[loc]
 					elsif pts.length == 3
 						vols[report] += [Volley.new(*pts)]
 						if row[V] != 'Volley 4'
-							pts = [Point4D.new(row[X], row[Y], row[Z], row[T])] 
+							pts = [point] 
 							curvol = row[V]
 						else
+							fours[row[loc].strip] += [point] 
 							pts = []
 							curvol = 'Volley 1'
 						end
@@ -82,29 +85,33 @@ def planet_data_full(planet_name)
 			end
 		end
 	end
-	return vols
+	return vols, fours
 end
 
 def hunt(planet, owner)
 	# hunts for given planet, returns set of possible points
-	full_data = planet_data_full(planet)
-	glancing_blows = planet_data(planet, owner, 'G')
-	near_misses = planet_data(planet, owner, 'N')
-	if near_misses.length > 0 then
-		possible = near_misses[0].point_set(NM)
-	elsif glancing_blows.length > 0 then
-		possible = glancing_blows[0].point_set(GB)
-	else
-		raise 'Insufficient data'
-	end
-	full_data.each do |report, volleys|
-		#puts report
-		#puts volleys.length
-		volleys.each do |v| 
+	voll_data, four_data = planet_data_full(planet)
+# 	glancing_blows = planet_data(planet, owner, 'G')
+# 	near_misses = planet_data(planet, owner, 'N')
+# 	if near_misses.length > 0 then
+# 		possible = near_misses[0].point_set(NM)
+# 	elsif glancing_blows.length > 0 then
+# 		possible = glancing_blows[0].point_set(GB)
+# 	else
+# 		raise 'Insufficient data'
+# 	end
+	possible = Point4D.new(-6,-59,-72,-26).point_set(GB) # deduced data required to hunt 5
+	four_data.each do |status, points|
+		points.each do |pt| 
 			#puts possible.length
-			possible = v.within_set(possible, report) 
+			#puts "checking status: G"
+			pt.with_status(possible, status) 
 		end
 	end
+	voll_data.each do |report, volleys|
+		volleys.each { |v| possible = v.within_set(possible, report) }
+	end
+
 # 	glancing_blows.each { |pt| possible = pt.within_set(possible, GB, NM) }
 # 	near_misses.each { |pt| possible = pt.within_set(possible, NM ,HT) }
 # 	misses.each { |pt| possible = pt.without_set(possible, GB) }
