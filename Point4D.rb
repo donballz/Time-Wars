@@ -80,11 +80,7 @@ class Point4D
 	def with_status(set, status)
 		# returns list of points which have a given letter status, for volley fours
 		result = []
-		set.each do |pt| 
-			#puts "result status: #{pt.status(self)}|"
-			#puts "test status: #{pt.status(self) == status}"
-			result.push(pt) if pt.status(self) == status
-		end
+		set.each { |pt| result.push(pt) if pt.status(self) == status }
 		return result
 	end
 	

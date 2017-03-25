@@ -201,7 +201,6 @@ end
 def Main()
 	hunt_all()
 	#optimize_all()
-	#puts planet_data_full('PL_5')
 end
 
 now = Time.now
