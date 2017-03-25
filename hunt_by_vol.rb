@@ -8,8 +8,8 @@ Planet_info = [ { owner: 'Planet 1', planet: 'PL_1', alive: 0 },
 				{ owner: 'Planet 2', planet: 'PL_2', alive: 0 },
 				{ owner: 'Planet 3', planet: 'PL_3', alive: 0 },
 				{ owner: 'Planet 4', planet: 'PL_4', alive: 0 },
-				{ owner: 'Planet 5', planet: 'PL_5', alive: 1 },
-				{ owner: 'Planet 6', planet: 'PL_6', alive: 0 },
+				{ owner: 'Planet 5', planet: 'PL_5', alive: 0 },
+				{ owner: 'Planet 6', planet: 'PL_6', alive: 1 },
 				{ owner: 'Planet 7', planet: 'PL_7', alive: 0 },
 				{ owner: 'Planet 8', planet: 'PL_8', alive: 0 },
 				{ owner: 'Planet 9', planet: 'PL_9', alive: 0 },
@@ -91,26 +91,22 @@ end
 def hunt(planet, owner)
 	# hunts for given planet, returns set of possible points
 	voll_data, four_data = planet_data_full(planet)
-# 	glancing_blows = planet_data(planet, owner, 'G')
-# 	near_misses = planet_data(planet, owner, 'N')
-# 	if near_misses.length > 0 then
-# 		possible = near_misses[0].point_set(NM)
-# 	elsif glancing_blows.length > 0 then
-# 		possible = glancing_blows[0].point_set(GB)
-# 	else
-# 		raise 'Insufficient data'
-# 	end
-	possible = Point4D.new(-6,-59,-72,-26).point_set(GB) # deduced data required to hunt 5
+	glancing_blows = planet_data(planet, owner, 'G')
+	near_misses = planet_data(planet, owner, 'N')
+	if near_misses.length > 0 then
+		possible = near_misses[0].point_set(NM)
+	elsif glancing_blows.length > 0 then
+		possible = glancing_blows[0].point_set(GB)
+	else
+		raise 'Insufficient data'
+	end
+	#possible = Point4D.new(-6,-59,-72,-26).point_set(GB) # deduced data required to hunt 5
 	four_data.each do |status, points|
 		points.each { |pt| possible = pt.with_status(possible, status) }
 	end
 	voll_data.each do |report, volleys|
 		volleys.each { |v| possible = v.within_set(possible, report) }
 	end
-
-# 	glancing_blows.each { |pt| possible = pt.within_set(possible, GB, NM) }
-# 	near_misses.each { |pt| possible = pt.within_set(possible, NM ,HT) }
-# 	misses.each { |pt| possible = pt.without_set(possible, GB) }
 	#to_sql(possible, planet)
 	return possible
 end
