@@ -53,6 +53,7 @@ def planet_data_full(planet_name)
 	pts = []
 	curvol = 'Volley 1'
 	loc = nil
+	report = 'QQQ'
 	Public_data.each_sheet do |s| 
 		if s == 'ShotData'
 			first_row = true
@@ -63,8 +64,9 @@ def planet_data_full(planet_name)
 				else
 					if curvol == row[V]
 						pts.push(Point4D.new(row[X], row[Y], row[Z], row[T]))
+						report = row[loc]
 					elsif pts.length == 3
-						vols[row[loc]] += [Volley.new(*pts)]
+						vols[report] += [Volley.new(*pts)]
 						if row[V] != 'Volley 4'
 							pts = [Point4D.new(row[X], row[Y], row[Z], row[T])] 
 							curvol = row[V]
@@ -96,7 +98,12 @@ def hunt(planet, owner)
 		raise 'Insufficient data'
 	end
 	full_data.each do |report, volleys|
-		volleys.each { |v| possible = v.within_set(possible, report) }
+		#puts report
+		#puts volleys.length
+		volleys.each do |v| 
+			#puts possible.length
+			possible = v.within_set(possible, report) 
+		end
 	end
 # 	glancing_blows.each { |pt| possible = pt.within_set(possible, GB, NM) }
 # 	near_misses.each { |pt| possible = pt.within_set(possible, NM ,HT) }
