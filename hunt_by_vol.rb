@@ -8,8 +8,8 @@ Planet_info = [ { owner: 'Planet 1', planet: 'PL_1', alive: 0 },
 				{ owner: 'Planet 2', planet: 'PL_2', alive: 0 },
 				{ owner: 'Planet 3', planet: 'PL_3', alive: 0 },
 				{ owner: 'Planet 4', planet: 'PL_4', alive: 0 },
-				{ owner: 'Planet 5', planet: 'PL_5', alive: 0 },
-				{ owner: 'Planet 6', planet: 'PL_6', alive: 1 },
+				{ owner: 'Planet 5', planet: 'PL_5', alive: 1 },
+				{ owner: 'Planet 6', planet: 'PL_6', alive: 0 },
 				{ owner: 'Planet 7', planet: 'PL_7', alive: 0 },
 				{ owner: 'Planet 8', planet: 'PL_8', alive: 0 },
 				{ owner: 'Planet 9', planet: 'PL_9', alive: 0 },
@@ -102,11 +102,7 @@ def hunt(planet, owner)
 # 	end
 	possible = Point4D.new(-6,-59,-72,-26).point_set(GB) # deduced data required to hunt 5
 	four_data.each do |status, points|
-		points.each do |pt| 
-			#puts possible.length
-			#puts "checking status: G"
-			pt.with_status(possible, status) 
-		end
+		points.each { |pt| possible = pt.with_status(possible, status) }
 	end
 	voll_data.each do |report, volleys|
 		volleys.each { |v| possible = v.within_set(possible, report) }
