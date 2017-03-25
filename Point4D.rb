@@ -134,7 +134,6 @@ class Volley
 		@one = one
 		@two = two
 		@thr = thr
-		@set = [one, two, thr]
 	end
 	
 	def to_s
@@ -144,13 +143,13 @@ class Volley
 	
 	def each
 		# allows user to iterate over the point set
-		@set.each { |s| yield s }
+		[@one, @two, @thr].each { |s| yield s }
 	end
 	
 	def dist(pt)
 		# gives distance report between any two from set to given pt
 		hits, nears, glances, misses = 0, 0, 0, 0
-		@set.each do |point|
+		self.each do |point|
 			dist = point.dist(pt)
 			if dist <= HT
 				hits += 1
