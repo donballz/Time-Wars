@@ -136,7 +136,7 @@ def volley_generation(possible)
 	ranks = []
 	(0...n).each do |i|
 		# sample of 10, within 30, 10 and 3
-		sample, metrics = get_volley3(possible, 10, [GB, NM, HT])
+		sample, metrics = get_volley(possible, 10, [GB, NM, HT])
 		tot =  metrics.reduce(0, :+) # sum of hit percetages
 		volleys[tot] = [sample, metrics]
 		ranks.push(tot)

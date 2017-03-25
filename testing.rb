@@ -29,18 +29,18 @@ actual = Point4D.new(-35,14,-42,-66)
 #	end
 #end
 
-def unzipper()
-	# helper function for unzip_sql
-	(-1..1).each do |i| 
-		(-1..1).each do |j| 
-			(-1..1).each do |k| 
-				(-1..1).each do |l|
-					puts Point4D.new(i, j, k, l)
-				end
-			end
-		end
-	end
-end
+#def unzipper()
+#	# helper function for unzip_sql
+#	(-1..1).each do |i| 
+#		(-1..1).each do |j| 
+#			(-1..1).each do |k| 
+#				(-1..1).each do |l|
+#					puts Point4D.new(i, j, k, l)
+#				end
+#			end
+#		end
+#	end
+#end
 
 #unzipper()
 

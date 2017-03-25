@@ -87,7 +87,7 @@ class Point4D
 	end
 end
 
-def get_volley3(set, n, lim_set)
+def get_volley(set, n, lim_set)
 	# creates random sample of size n and checks it against the set's points
 	# returns the sample and the percentage of points in the set it hits in an array
 	sample = set.sample(n)
