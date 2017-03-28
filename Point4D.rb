@@ -129,7 +129,7 @@ class Volley
 		[@one, @two, @thr].each { |s| yield s }
 	end
 	
-	def dist(pt)
+	def status(pt)
 		# gives distance report between any two from set to given pt
 		hits, nears, glances, misses = 0, 0, 0, 0
 		self.each do |point|
@@ -150,7 +150,7 @@ class Volley
 	def status_check(set, status)
 		# return list of points with a given distance status
 		result = []
-		set.each {|pt| result.push(pt) if self.dist(pt) == status}
+		set.each {|pt| result.push(pt) if self.status(pt) == status}
 		return result
 	end
 end

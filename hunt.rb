@@ -16,35 +16,13 @@ Planet_info = [ { owner: 'Planet 1', planet: 'PL_1', alive: 0 },
 				{ owner: 'Planet X', planet: 'PL_X', alive: 0 }]
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201703_round05_clean.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201703_round06.xlsx')
 # Excel column numbers
 V = 2 # Volley num
 X = 4
 Y = 5
 Z = 6
 T = 7
-
-def planet_data(planet_name, owner, status)
-	# gets data for planet given by status flag
-	misses = []
-	loc = nil
-	Public_data.each_sheet do |s| 
-		if s == 'ShotData'
-			first_row = true
-			Public_data.each_row do |row| 
-				if first_row
-					row.each { |cell| loc = row.index(cell) if cell == planet_name }
-					first_row = false if loc
-				else
-					if (row[loc] == status * 3 or row[loc].strip == status) and row[0] != owner
-						misses.push(Point4D.new(row[X], row[Y], row[Z], row[T])) 
-					end
-				end
-			end
-		end
-	end
-	return misses
-end
 
 def planet_data_full(planet_name)
 	# gets full data for planet given by hashed by distance report
@@ -88,18 +66,28 @@ def planet_data_full(planet_name)
 	return vols, fours
 end
 
+def full_miss(point, misses)
+	# returns true if miss volley has miss status for all misses
+	misses.each do |status, volleys| 
+		volleys.each { |v| return false if v.status(point) == status }
+	end
+	return true
+end
+
+def miss_hunter(planet)
+	# looks for planets without useful info -- slow
+	possible = []
+	misses, fours = planet_data_full(planet)
+	#misses.each { |k,v| return [] unless k == 'X' or k == 'XXX' }
+	universe(3) {|pt| possible.push(pt) if full_miss(pt, misses)} 
+	puts "writing #{possible.length} points to #{planet} in zip-3"
+	#to_sql(possible, planet)
+	return possible
+end
+
 def hunt(planet, owner)
 	# hunts for given planet, returns set of possible points
 	voll_data, four_data = planet_data_full(planet)
-# 	glancing_blows = planet_data(planet, owner, 'G')
-# 	near_misses = planet_data(planet, owner, 'N')
-# 	if near_misses.length > 0 then
-# 		possible = near_misses[0].point_set(NM)
-# 	elsif glancing_blows.length > 0 then
-# 		possible = glancing_blows[0].point_set(GB)
-# 	else
-# 		raise 'Insufficient data'
-# 	end
 	possible = Point4D.new(-6,-59,-72,-26).point_set(GB) # deduced data required to hunt 5
 	four_data.each do |status, points|
 		points.each { |pt| possible = pt.status_check(possible, status) }
@@ -199,8 +187,10 @@ def hunt_all()
 end
 
 def Main()
-	hunt_all()
+	#hunt_all()
 	#optimize_all()
+	puts miss_hunter('PL_9').length
+	#puts planet_data_full('PL_9')
 end
 
 now = Time.now
