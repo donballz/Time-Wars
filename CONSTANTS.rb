@@ -9,3 +9,6 @@ SCMA = 'time'
 HT = 3
 NM = 10
 GB = 30
+
+# Smart bomb offset
+SB = 10
