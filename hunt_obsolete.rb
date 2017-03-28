@@ -16,9 +16,8 @@ Planet_info = [ { owner: 'Planet 1', planet: 'PL_1', alive: 0 },
 				{ owner: 'Planet X', planet: 'PL_X', alive: 0 }]
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201703_round05_clean.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201703_round05.xlsx')
 # Excel column numbers
-V = 2 # Volley num
 X = 4
 Y = 5
 Z = 6
@@ -46,51 +45,65 @@ def planet_data(planet_name, owner, status)
 	return misses
 end
 
-def planet_data_full(planet_name)
-	# gets full data for planet given by hashed by distance report
-	# assumes clean data !!
-	vols = Hash.new([]) # keys are status, values are point sets
-	fours = Hash.new([]) # keys are status, values are points
-	pts = []
-	curvol = 'Volley 1'
-	loc = nil
-	report = 'QQQ'
-	Public_data.each_sheet do |s| 
-		if s == 'ShotData'
-			first_row = true
-			Public_data.each_row do |row|
-				if first_row
-					row.each { |cell| loc = row.index(cell) if cell == planet_name }
-					first_row = false if loc
-				else
-					point = Point4D.new(row[X], row[Y], row[Z], row[T])
-					if curvol == row[V]
-						pts.push(point)
-						report = row[loc]
-					elsif pts.length == 3
-						vols[report] += [Volley.new(*pts)]
-						if row[V] != 'Volley 4'
-							pts = [point] 
-							curvol = row[V]
-						else
-							fours[row[loc].strip] += [point] 
-							pts = []
-							curvol = 'Volley 1'
-						end
-					else
-						pts = []
-						curvol = row[V]
-					end
+def misses_only(planet, owner)
+	# returns miss list if there is no solid info on the planet
+	misses = planet_data(planet, owner, 'X')
+	glancing_blows = planet_data(planet, owner, 'G')
+	near_misses = planet_data(planet, owner, 'N')
+	return misses if near_misses.length == 0 and glancing_blows.length == 0
+	return nil
+end
+
+def full_miss(point, misses)
+	# returns true if point outside 30 of all misses
+	misses.each { |pt| return false if pt.dist(point) <= GB }
+	return true
+end
+
+def unzipper()
+	# helper function for unzip_sql
+	(-1..1).each do |i| 
+		(-1..1).each do |j| 
+			(-1..1).each do |k| 
+				(-1..1).each do |l|
+					yield Point4D.new(i, j, k, l)
 				end
 			end
 		end
 	end
-	return vols, fours
+end
+
+def unzip_sql(table)
+	# takes table of "zipped" (even only) points and generates full list of points
+	possible = []
+	zipped = fr_sql(table)
+	zipped.each do |z|
+		unzipper { |u| possible.push(z + u) }
+	end
+	return possible
+end
+
+def miss_hunter(planet, owner)
+	# looks for planets without useful info -- slow
+	possible = []
+	misses = misses_only(planet, owner)
+	# searching every other point will cut search area by factor of 16. 
+	# All points not searched are within 1 of a searched point
+	# zip 2 takes 2.5 hours and is 1.6M points on disk. unpacking takes 90 seconds
+	# zip 3 takes 17 minutes and is 330K points on disk. unpacking takes 77 seconds!
+	if misses
+		universe(3) {|pt| possible.push(pt) if full_miss(pt, misses)} 
+		puts "writing #{possible.length} points to #{planet} in zip-3"
+		to_sql(possible, planet)
+	else
+		puts 'please use available non-miss data'
+	end
+	return possible
 end
 
 def hunt(planet, owner)
 	# hunts for given planet, returns set of possible points
-	voll_data, four_data = planet_data_full(planet)
+	misses = planet_data(planet, owner, 'X')
 	glancing_blows = planet_data(planet, owner, 'G')
 	near_misses = planet_data(planet, owner, 'N')
 	if near_misses.length > 0 then
@@ -98,15 +111,15 @@ def hunt(planet, owner)
 	elsif glancing_blows.length > 0 then
 		possible = glancing_blows[0].point_set(GB)
 	else
-		raise 'Insufficient data'
+		if exists(planet) # checks sql server for table
+			possible = fr_sql(planet)
+		else
+			return miss_hunter(planet, owner)
+		end
 	end
-	possible = Point4D.new(-6,-59,-72,-26).point_set(GB) # deduced data required to hunt 5
-	four_data.each do |status, points|
-		points.each { |pt| possible = pt.with_status(possible, status) }
-	end
-	voll_data.each do |report, volleys|
-		volleys.each { |v| possible = v.within_set(possible, report) }
-	end
+	glancing_blows.each { |pt| possible = pt.within_set(possible, GB, NM) }
+	near_misses.each { |pt| possible = pt.within_set(possible, NM ,HT) }
+	misses.each { |pt| possible = pt.without_set(possible, GB) }
 	#to_sql(possible, planet)
 	return possible
 end
