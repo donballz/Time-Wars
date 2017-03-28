@@ -89,7 +89,7 @@ class Point4D
 		return result
 	end
 	
-	def smartbomb(set, 
+	#def smartbomb(set, 
 	
 	def point_set(range)
 		# returns set of points within range of given point
