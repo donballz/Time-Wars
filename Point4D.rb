@@ -75,7 +75,7 @@ class Point4D
 		end
 	end
 	
-	def with_status(set, status)
+	def status_check(set, status)
 		# returns list of points which have a given letter status, for volley fours
 		result = []
 		set.each { |pt| result.push(pt) if pt.status(self) == status }
@@ -147,10 +147,10 @@ class Volley
 		return ('H' * hits) + ('N' * nears) + ('G' * glances) + ('X' * misses)
 	end
 	
-	def within_set(set, report)
-		# return list of points with a given distance report
+	def status_check(set, status)
+		# return list of points with a given distance status
 		result = []
-		set.each {|pt| result.push(pt) if self.dist(pt) == report}
+		set.each {|pt| result.push(pt) if self.dist(pt) == status}
 		return result
 	end
 end

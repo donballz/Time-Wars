@@ -102,10 +102,10 @@ def hunt(planet, owner)
 # 	end
 	possible = Point4D.new(-6,-59,-72,-26).point_set(GB) # deduced data required to hunt 5
 	four_data.each do |status, points|
-		points.each { |pt| possible = pt.with_status(possible, status) }
+		points.each { |pt| possible = pt.status_check(possible, status) }
 	end
-	voll_data.each do |report, volleys|
-		volleys.each { |v| possible = v.within_set(possible, report) }
+	voll_data.each do |status, volleys|
+		volleys.each { |v| possible = v.status_check(possible, status) }
 	end
 	#to_sql(possible, planet)
 	return possible

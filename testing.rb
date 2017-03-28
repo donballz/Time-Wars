@@ -44,45 +44,59 @@ actual = Point4D.new(-35,14,-42,-66)
 
 #unzipper()
 
-whovol = [
-Point4D.new(24, -64, 33, 62),
-Point4D.new(43, -64, 29, 63),
-Point4D.new(55, -66, 34, 59),
-Point4D.new(23, -62, 34, 64),
-Point4D.new(25, -67, 30, 62),
-Point4D.new(21, -64, 31, 60),
-Point4D.new(24, -63, 36, 60),
-Point4D.new(22, -63, 26, 62),
-Point4D.new(22, -61, 30, 65),
-Point4D.new(24, -65, 34, 56)]
-	
-#possible = fr_sql('PL_3')
-
-def get_volley_def(set, sample, lim_set)
-	# checks given sample and checks it against the set's points
-	# returns the sample and the percentage of points in the set it hits in an array
-	total_pts = 0.0
-	m = lim_set.length
-	lim_pts = [0] * m
-	set.each do |pt|
-		hits = [false] * m
-		sample.each do |shot| 
-			dist = shot.dist(pt)
-			(0...m).each { |i| hits[i] = true if dist <= lim_set[i] }
-		end
-		(0...m).each { |i|  lim_pts[i] += 1 if hits[i] }
-		total_pts += 1
+def good_guess(possible)
+	# generates a random volley of 10 and returns as array
+	n = 20 # number of volleys to generate
+	m = 3  # number of volleys to print
+	volleys = {}
+	ranks = []
+	(0...n).each do |i|
+		# sample of 10, within 30, 10 and 3
+		sample, metrics = get_volley(possible, 10, [GB, NM, HT])
+		tot =  metrics.reduce(0, :+) # sum of hit percetages
+		volleys[tot] = [sample, metrics]
+		ranks.push(tot)
 	end
-	return sample, lim_pts.map { |l| l / total_pts }
+	ranks.sort!.reverse!
+	return volleys[ranks[0]][0]
 end
 
-# sample, metrics = get_volley_def(possible, whovol, 10, [30, 10, 3])
-# puts sample
-# puts "#{(100*metrics[0]).round(2)}% points in glancing blow range"
-# puts "#{(100*metrics[1]).round(2)}% points in near miss range"
-# puts "#{(100*metrics[2]).round(2)}% points in hit range"
-# puts "out of #{possible.length} total points"
+# whovol = [
+# Point4D.new(24, -64, 33, 62),
+# Point4D.new(43, -64, 29, 63),
+# Point4D.new(55, -66, 34, 59),
+# Point4D.new(23, -62, 34, 64),
+# Point4D.new(25, -67, 30, 62),
+# Point4D.new(21, -64, 31, 60),
+# Point4D.new(24, -63, 36, 60),
+# Point4D.new(22, -63, 26, 62),
+# Point4D.new(22, -61, 30, 65),
+# Point4D.new(24, -65, 34, 56)]
+	
+possible = fr_sql('PL_X')
 
-ps = Volley.new(whovol[0],whovol[1],whovol[2])
-ps.each { |pt| puts pt.dist(whovol[3]) }
-puts ps.dist(whovol[3])
+def build_volley(guess)
+	# takes array of 10 Points and outputs 3 Volleys and a Point
+	result = []
+	pt_temp = []
+	(0..8).each do |i|
+		pt_temp.push(guess[i])
+		if i % 3 == 2
+			result.push(Volley.new(*pt_temp))
+			pt_temp = []
+		end
+	end
+	return result.push(guess[9])
+end
+
+guess = good_guess(possible)
+vols = build_volley(guess)
+(0..3).each do |x| 
+	puts possible.length
+	if x == 3
+		possible = vols[x].status_check(possible, "N") 
+	else
+		possible = vols[x].status_check(possible, "NNN") 
+	end
+end
+puts possible.length
