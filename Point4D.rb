@@ -1,5 +1,3 @@
-require_relative 'common_funcs.rb'
-
 RADIUS = 100
 
 def universe(step=1)
@@ -90,6 +88,8 @@ class Point4D
 		set.each {|pt| result.push(pt) if pt.dist(self) > range}
 		return result
 	end
+	
+	def smartbomb(set, 
 	
 	def point_set(range)
 		# returns set of points within range of given point
