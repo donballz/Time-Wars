@@ -50,7 +50,6 @@ def planet_data_full(planet_name)
 	# gets full data for planet given by hashed by distance report
 	# assumes clean data !!
 	vols = Hash.new([]) # keys are status, values are point sets
-	fours = Hash.new([]) # keys are status, values are points
 	pts = []
 	curvol = 'Volley 1'
 	loc = nil
@@ -73,7 +72,7 @@ def planet_data_full(planet_name)
 							pts = [point] 
 							curvol = row[V]
 						else
-							fours[row[loc].strip] += [point] 
+							vols[row[loc].strip] += [point] 
 							pts = []
 							curvol = 'Volley 1'
 						end
@@ -85,12 +84,12 @@ def planet_data_full(planet_name)
 			end
 		end
 	end
-	return vols, fours
+	return vols
 end
 
 def hunt(planet, owner)
 	# hunts for given planet, returns set of possible points
-	voll_data, four_data = planet_data_full(planet)
+	voll_data = planet_data_full(planet)
 # 	glancing_blows = planet_data(planet, owner, 'G')
 # 	near_misses = planet_data(planet, owner, 'N')
 # 	if near_misses.length > 0 then
@@ -101,11 +100,11 @@ def hunt(planet, owner)
 # 		raise 'Insufficient data'
 # 	end
 	possible = Point4D.new(-6,-59,-72,-26).point_set(GB) # deduced data required to hunt 5
-	four_data.each do |status, points|
-		points.each { |pt| possible = pt.status_check(possible, status) }
-	end
 	voll_data.each do |status, volleys|
-		volleys.each { |v| possible = v.status_check(possible, status) }
+		volleys.each do |v| 
+			puts "#{status}: #{possible.length}"
+			possible = v.status_check(possible, status) 
+		end
 	end
 	#to_sql(possible, planet)
 	return possible
