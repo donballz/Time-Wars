@@ -16,7 +16,7 @@ Planet_info = [ { owner: 'Planet 1', planet: 'PL_1', alive: 0 },
 				{ owner: 'Planet X', planet: 'PL_X', alive: 0 }]
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201703_round06.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201703_round05.xlsx')
 # All possible hunt statuses, in specific order to maximize efficient search
 AllStatus = ['N','NNN','NNG','NNX','NGG','NGX','NXX','G','GGG','GGX','GXX','X','XXX']
 # Excel column numbers
@@ -67,34 +67,41 @@ def planet_data(planet_name)
 	return vols
 end
 
-def full_miss(point, misses)
-	# returns true if miss volley has miss status for all misses
-	misses.each do |status, volleys| 
-		volleys.each { |v| return false if v.status(point) != status }
+def full_match(point, voll_stats)
+	# returns true if volley matches status for all volley-status combos
+	AllStatus.each do |s|
+		if voll_stats.key?(s)
+			voll_stats[s].each { |v| return false if v.status(point) != s}
+		end
 	end
 	return true
 end
 
-def miss_hunter(planet)
-	# looks for planets without useful info -- slow
+def make_possible(volleys)
+	# creates initial possibility sphere in zip-3
 	possible = []
-	misses = planet_data(planet)
-	#misses.each { |k,v| return [] unless k == 'X' or k == 'XXX' }
-	universe(3) {|pt| possible.push(pt) if full_miss(pt, misses)} 
-	puts "writing #{possible.length} points to #{planet} in zip-3"
-	#to_sql(possible, planet)
+	universe(3) {|pt| possible.push(pt) if full_match(pt, volleys)} 
 	return possible
 end
 
 def hunt(planet, owner)
 	# hunts for given planet, returns set of possible points
-	voll_data = planet_data(planet)
-	possible = Point4D.new(-6,-59,-72,-26).point_set(GB) # deduced data required to hunt 5
+	volleys = planet_data(planet)
+	if false
+		# manually entered data change ^ to true to use
+		# currently hunting: 5
+		possible = Point4D.new(-6,-59,-72,-26).point_set(GB) 
+	elsif exists(planet)
+		possible = fr_sql(planet)
+	else
+		possible = make_possible(volleys)
+	end
 	AllStatus.each do |status|
-		if voll_data.key?(status)
-			voll_data[status].each { |v| possible = v.status_check(possible, status) }
+		if volleys.key?(status)
+			volleys[status].each { |v| possible = v.status_check(possible, status) }
 		end
 	end
+	#puts "writing #{possible.length} points to #{planet} in zip-3"
 	#to_sql(possible, planet)
 	return possible
 end
@@ -187,9 +194,9 @@ def hunt_all()
 end
 
 def Main()
-	#hunt_all()
+	hunt_all()
 	#optimize_all()
-	possible = miss_hunter('PL_9')
+	#possible = miss_hunter('PL_9')
 	#planet_data('PL_9').each { |k,v| puts "#{k}: #{v.length}" }
 end
 
