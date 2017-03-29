@@ -8,15 +8,15 @@ Planet_info = [ { owner: 'Planet 1', planet: 'PL_1', alive: 0 },
 				{ owner: 'Planet 2', planet: 'PL_2', alive: 0 },
 				{ owner: 'Planet 3', planet: 'PL_3', alive: 0 },
 				{ owner: 'Planet 4', planet: 'PL_4', alive: 0 },
-				{ owner: 'Planet 5', planet: 'PL_5', alive: 0 },
+				{ owner: 'Planet 5', planet: 'PL_5', alive: 1 },
 				{ owner: 'Planet 6', planet: 'PL_6', alive: 0 },
 				{ owner: 'Planet 7', planet: 'PL_7', alive: 0 },
 				{ owner: 'Planet 8', planet: 'PL_8', alive: 0 },
-				{ owner: 'Planet 9', planet: 'PL_9', alive: 1 },
+				{ owner: 'Planet 9', planet: 'PL_9', alive: 0 },
 				{ owner: 'Planet X', planet: 'PL_X', alive: 0 }]
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201703_round06.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201703_round05.xlsx')
 # All possible hunt statuses, in specific order to maximize efficient search
 AllStatus = ['N','NNN','NNG','NNX','NGG','NGX','NXX','G','GGG','GGX','GXX','X','XXX']
 # Excel column numbers
@@ -150,7 +150,7 @@ def volley_optimization(possible, current)
 			best_cnt = cnt 
 		end
 	end
-	current.push(best_available)
+	current.push(best)
 	if current.length == 10
 		return current
 	else
@@ -203,8 +203,8 @@ def hunt_all()
 end
 
 def Main()
-	hunt_all()
-	#optimize_all()
+	#hunt_all()
+	optimize_all()
 	#possible = miss_hunter('PL_9')
 	#planet_data('PL_9').each { |k,v| puts "#{k}: #{v.length}" }
 end
