@@ -38,3 +38,25 @@ def get_volley_def(set, sample, lim_set)
 	return lim_pts.map { |l| l / total_pts }
 end
 
+def unzipper()
+	# helper function for unzip_sql
+	(-1..1).each do |i| 
+		(-1..1).each do |j| 
+			(-1..1).each do |k| 
+				(-1..1).each do |l|
+					yield Point4D.new(i, j, k, l)
+				end
+			end
+		end
+	end
+end
+
+def unzip_sql(table)
+	# takes table of "zipped" (even only) points and generates full list of points
+	possible = []
+	zipped = fr_sql(table)
+	zipped.each do |z|
+		unzipper { |u| possible.push(z + u) }
+	end
+	return possible
+end
