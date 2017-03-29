@@ -26,7 +26,7 @@ Y = 5
 Z = 6
 T = 7
 
-def planet_data_full(planet_name)
+def planet_data(planet_name)
 	# gets full data for planet given by hashed by distance report
 	# assumes clean data !!
 	vols = Hash.new([]) # keys are status, values are point sets
@@ -70,7 +70,7 @@ end
 def full_miss(point, misses)
 	# returns true if miss volley has miss status for all misses
 	misses.each do |status, volleys| 
-		volleys.each { |v| return false if v.status(point) == status }
+		volleys.each { |v| return false if v.status(point) != status }
 	end
 	return true
 end
@@ -78,7 +78,7 @@ end
 def miss_hunter(planet)
 	# looks for planets without useful info -- slow
 	possible = []
-	misses, fours = planet_data_full(planet)
+	misses = planet_data(planet)
 	#misses.each { |k,v| return [] unless k == 'X' or k == 'XXX' }
 	universe(3) {|pt| possible.push(pt) if full_miss(pt, misses)} 
 	puts "writing #{possible.length} points to #{planet} in zip-3"
@@ -88,7 +88,7 @@ end
 
 def hunt(planet, owner)
 	# hunts for given planet, returns set of possible points
-	voll_data = planet_data_full(planet)
+	voll_data = planet_data(planet)
 	possible = Point4D.new(-6,-59,-72,-26).point_set(GB) # deduced data required to hunt 5
 	AllStatus.each do |status|
 		if voll_data.key?(status)
@@ -187,10 +187,10 @@ def hunt_all()
 end
 
 def Main()
-	hunt_all()
+	#hunt_all()
 	#optimize_all()
-	#puts miss_hunter('PL_9').length
-	#planet_data_full('PL_9').each { |k,v| puts "#{k}: #{v.length}" }
+	possible = miss_hunter('PL_9')
+	#planet_data('PL_9').each { |k,v| puts "#{k}: #{v.length}" }
 end
 
 now = Time.now
