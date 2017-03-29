@@ -46,20 +46,6 @@ class Point4D
 		# gives distance between any two points
 		((@x - pt2.x)**2 + (@y - pt2.y)**2 + (@z - pt2.z)**2 + (@t - pt2.t)**2)**0.5
 	end
-
-	def within(range, wo=0)
-		# return list of points within a range from entire hypersphere
-		result = []
-		universe {|pt| result.push(pt) if pt.dist(self) <= range and pt.dist(self) >= wo}
-		return result
-	end
-	
-	def within_set(set, range, wo=0)
-		# return list of points within a range from given set of points
-		result = []
-		set.each {|pt| result.push(pt) if pt.dist(self) <= range and pt.dist(self) >= wo}
-		return result
-	end
 	
 	def status(pt, sb=0)
 		# returns letter status with from given point
@@ -79,13 +65,6 @@ class Point4D
 		# returns list of points which have a given letter status, for volley fours
 		result = []
 		set.each { |pt| result.push(pt) if pt.status(self) == status }
-		return result
-	end
-	
-	def without_set(set, range)
-		# return list of points which fully miss the shot by distance equal to range
-		result = []
-		set.each {|pt| result.push(pt) if pt.dist(self) > range}
 		return result
 	end
 	
@@ -115,7 +94,7 @@ end
 
 class Volley 
 	# class to hold set of three points so each data point of this type can be considered in total
-	ATTRS = [:x, :y, :z, :t]
+	ATTRS = [:one, :two, :thr]
 	attr_reader(*ATTRS)
 		
 	def initialize(one, two, thr)
