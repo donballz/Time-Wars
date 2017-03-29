@@ -140,13 +140,13 @@ end
 
 def volley_optimization(possible, current)
 	# attempts to find best available volley one point at a time. Recursive
-	best_available = Point4D.new(0,0,0,0)
+	best = Point4D.new(0,0,0,0)
 	best_cnt = 0
 	possible.each do |test_pt|
 		cnt = 0
 		possible.each { |pt| cnt +=1 if test_pt.dist(pt) <= HT }
 		if cnt > best_cnt
-			best_available = test_pt 
+			best = test_pt 
 			best_cnt = cnt 
 		end
 	end
@@ -154,7 +154,7 @@ def volley_optimization(possible, current)
 	if current.length == 10
 		return current
 	else
-		return volley_optimization(best_available.without_set(possible, HT), current)
+		return volley_optimization(best.without_status(possible, 'H'), current)
 	end
 end
 

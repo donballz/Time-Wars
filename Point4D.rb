@@ -68,6 +68,13 @@ class Point4D
 		return result
 	end
 	
+	def without_status(set, status)
+		# returns list of points which do NOT have a given letter status
+		result = []
+		set.each { |pt| result.push(pt) if pt.status(self) != status }
+		return result
+	end
+	
 	def smartbomb(set, status)
 		# return list of points which have a given letter status, for smart bombs
 		result = []
