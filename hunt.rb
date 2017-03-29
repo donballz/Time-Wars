@@ -16,7 +16,7 @@ Planet_info = [ { owner: 'Planet 1', planet: 'PL_1', alive: 0 },
 				{ owner: 'Planet X', planet: 'PL_X', alive: 0 }]
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201703_round05.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201703_round06.xlsx')
 # All possible hunt statuses, in specific order to maximize efficient search
 AllStatus = ['N','NNN','NNG','NNX','NGG','NGX','NXX','G','GGG','GGX','GXX','X','XXX']
 # Excel column numbers
@@ -101,8 +101,12 @@ def hunt(planet, owner)
 			volleys[status].each { |v| possible = v.status_check(possible, status) }
 		end
 	end
-	#puts "writing #{possible.length} points to #{planet} in zip-3"
-	#to_sql(possible, planet)
+	# below not ready. would need to pass and capture a format indicator
+# 	if possible.length <= 10 ** 5
+# 		possible = unzip(possible)
+# 	end
+	puts "writing #{possible.length} points to #{planet} in zip-3"
+	to_sql(possible, planet)
 	return possible
 end
 
