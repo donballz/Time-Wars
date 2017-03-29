@@ -27,6 +27,17 @@ def Main()
 	end
 end
 
+def quick()
+	(0..3).each do |n|
+		(0..3).each do |g|
+			(0..3).each do |x|
+				puts ('N' * n) + ('G' * g) + ('X' * x) if n + g + x == 3
+			end
+		end
+	end
+end
+
 now = Time.now
-Main()
+#Main()
+quick()
 puts "Run time: #{Time.now - now}"

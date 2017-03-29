@@ -17,6 +17,8 @@ Planet_info = [ { owner: 'Planet 1', planet: 'PL_1', alive: 0 },
 
 # Values common to all files of this type
 Public_data = Spreadsheet.new(EXCL + 'tw_201703_round06.xlsx')
+# All possible hunt statuses, in specific order to maximize efficient search
+AllStatus = ['N','NNN','NNG','NNX','NGG','NGX','NXX','G','GGG','GGX','GXX','X','XXX']
 # Excel column numbers
 V = 2 # Volley num
 X = 4
@@ -28,7 +30,6 @@ def planet_data_full(planet_name)
 	# gets full data for planet given by hashed by distance report
 	# assumes clean data !!
 	vols = Hash.new([]) # keys are status, values are point sets
-	fours = Hash.new([]) # keys are status, values are points
 	pts = []
 	curvol = 'Volley 1'
 	loc = nil
@@ -51,7 +52,7 @@ def planet_data_full(planet_name)
 							pts = [point] 
 							curvol = row[V]
 						else
-							fours[row[loc].strip] += [point] 
+							vols[row[loc].strip] += [point] 
 							pts = []
 							curvol = 'Volley 1'
 						end
@@ -63,7 +64,7 @@ def planet_data_full(planet_name)
 			end
 		end
 	end
-	return vols, fours
+	return vols
 end
 
 def full_miss(point, misses)
@@ -87,13 +88,12 @@ end
 
 def hunt(planet, owner)
 	# hunts for given planet, returns set of possible points
-	voll_data, four_data = planet_data_full(planet)
+	voll_data = planet_data_full(planet)
 	possible = Point4D.new(-6,-59,-72,-26).point_set(GB) # deduced data required to hunt 5
-	four_data.each do |status, points|
-		points.each { |pt| possible = pt.status_check(possible, status) }
-	end
-	voll_data.each do |status, volleys|
-		volleys.each { |v| possible = v.status_check(possible, status) }
+	AllStatus.each do |status|
+		if voll_data.key?(status)
+			voll_data[status].each { |v| possible = v.status_check(possible, status) }
+		end
 	end
 	#to_sql(possible, planet)
 	return possible
@@ -187,10 +187,10 @@ def hunt_all()
 end
 
 def Main()
-	#hunt_all()
+	hunt_all()
 	#optimize_all()
-	puts miss_hunter('PL_9').length
-	#puts planet_data_full('PL_9')
+	#puts miss_hunter('PL_9').length
+	#planet_data_full('PL_9').each { |k,v| puts "#{k}: #{v.length}" }
 end
 
 now = Time.now
