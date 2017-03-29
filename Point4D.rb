@@ -61,14 +61,14 @@ class Point4D
 		return result
 	end
 	
-	def status(pt)
+	def status(pt, sb=0)
 		# returns letter status with from given point
 		dist = pt.dist(self)
-		if dist <= HT
+		if dist <= HT + sb
 			return 'H'
-		elsif dist <= NM
+		elsif dist <= NM + sb
 			return 'N'
-		elsif dist <= GB
+		elsif dist <= GB + sb
 			return 'G'
 		else
 			return 'X'
@@ -89,7 +89,12 @@ class Point4D
 		return result
 	end
 	
-	#def smartbomb(set, 
+	def smartbomb(set, status)
+		# return list of points which have a given letter status, for smart bombs
+		result = []
+		set.each { |pt| result.push(pt) if pt.status(self, SB) == status }
+		return result
+	end
 	
 	def point_set(range)
 		# returns set of points within range of given point

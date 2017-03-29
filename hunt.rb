@@ -96,6 +96,11 @@ def hunt(planet, owner)
 	else
 		possible = make_possible(volleys)
 	end
+	if false
+		# set to true to factor in a smartbomb
+		roo = Point4D.new(68,54,-19,32)
+		possible = roo.smartbomb(possible, 'XXX')
+	end
 	AllStatus.each do |status|
 		if volleys.key?(status)
 			volleys[status].each { |v| possible = v.status_check(possible, status) }
