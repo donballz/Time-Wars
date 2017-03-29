@@ -51,10 +51,9 @@ def unzipper()
 	end
 end
 
-def unzip_sql(table)
-	# takes table of "zipped" (even only) points and generates full list of points
+def unzip(zipped)
+	# takes array of "zipped" (even only) points and generates full list of points
 	possible = []
-	zipped = fr_sql(table)
 	zipped.each do |z|
 		unzipper { |u| possible.push(z + u) }
 	end
