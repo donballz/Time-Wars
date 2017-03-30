@@ -116,6 +116,14 @@ def hunt(planet, owner)
 	return possible
 end
 
+def coverage_output(metrics, pt_cnt)
+	# func to output the coverage stats
+	puts "#{(100*metrics[0]).round(2)}% points in glancing blow range"
+	puts "#{(100*metrics[1]).round(2)}% points in near miss range"
+	puts "#{(100*metrics[2]).round(2)}% points in hit range"
+	puts "out of #{pt_cnt} total points"
+end
+
 def volley_generation(possible, size=10)
 	# generates random volleys and checks against coverage of possible space for planet
 	n = 20 # number of volleys to generate
@@ -132,10 +140,7 @@ def volley_generation(possible, size=10)
 	ranks.sort!.reverse!
 	(0...m).each do |i|
 		puts volleys[ranks[i]][0]
-		puts "#{(100*volleys[ranks[i]][1][0]).round(2)}% points in glancing blow range"
-		puts "#{(100*volleys[ranks[i]][1][1]).round(2)}% points in near miss range"
-		puts "#{(100*volleys[ranks[i]][1][2]).round(2)}% points in hit range"
-		puts "out of #{possible.length} total points"
+		coverage_output(volleys[ranks[i]][1], possible.length)
 	end
 end
 
@@ -176,10 +181,7 @@ def optimize_all()
 		sample = volley_optimization(v, [])
 		metrics = get_volley_def(v, sample, [GB, NM, HT])
 		puts sample
-		puts "#{(100*metrics[0]).round(2)}% points in glancing blow range"
-		puts "#{(100*metrics[1]).round(2)}% points in near miss range"
-		puts "#{(100*metrics[2]).round(2)}% points in hit range"
-		puts "out of #{v.length} total points"
+		coverage_output(metrics, v.length)
 	end
 	return nil
 end
