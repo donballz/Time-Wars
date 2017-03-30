@@ -73,3 +73,20 @@ def exists(table)
 		rows.each_hash { |row| return row['CNT'].to_i > 0 }
 	end
 end
+
+def backup(table)
+	# creates alt copy of table to reduce reruns
+	# no error handling, only run on extant tables
+	begin
+		con = Mysql.new SRVR, USER, PSWD
+		con.query("USE #{SCMA}")
+		con.query("DROP TABLE IF EXISTS #{table}_backup")
+		con.query("CREATE TABLE #{table}_backup AS SELECT * FROM #{table}")
+	rescue Mysql::Error => e
+		puts e.errno
+		puts e.error
+
+	ensure
+		con.close if con
+	end
+end

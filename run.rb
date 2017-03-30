@@ -1,4 +1,6 @@
 require_relative 'Point4D.rb'
+require_relative 'common_funcs.rb'
+require_relative 'sql_store.rb'
 
 def Main()
 	elducky1 = Point4D.new(30,10,30,10)
@@ -37,7 +39,30 @@ def quick()
 	end
 end
 
+def examine_volley(possible, volley)
+	# generates random volleys and checks against coverage of possible space for planet
+	metrics = get_volley_def(possible, volley, [GB, NM, HT])
+	puts volley
+	puts "#{(100*metrics[0]).round(2)}% points in glancing blow range"
+	puts "#{(100*metrics[1]).round(2)}% points in near miss range"
+	puts "#{(100*metrics[2]).round(2)}% points in hit range"
+	puts "out of #{possible.length} total points"
+end
+
 now = Time.now
 #Main()
-quick()
+#quick()
+arac_r6 = [
+			Point4D.new(-71, 33, 26, -20),
+			Point4D.new(-75, 40, 21, -10),
+			Point4D.new(-64, 30, 18, -20),
+			Point4D.new(-78, 29, 5, -15),
+			Point4D.new(-73, 33, 10, -6),
+			Point4D.new(-70, 26, 12, -19),
+			Point4D.new(-76, 24, 13, -21),
+			Point4D.new(-73, 25, 4, -20),
+			Point4D.new(-75, 35, 14, -11),
+			Point4D.new(-71, 33, 20, -14)]
+possible = fr_sql('PL_6')
+examine_volley(possible, arac_r6)
 puts "Run time: #{Time.now - now}"

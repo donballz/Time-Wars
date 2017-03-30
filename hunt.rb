@@ -4,19 +4,19 @@ require_relative 'Spreadsheet.rb'
 require_relative 'sql_store.rb'
 
 # Values specfic to planet
-Planet_info = [ { owner: 'Planet 1', planet: 'PL_1', alive: 0 },
-				{ owner: 'Planet 2', planet: 'PL_2', alive: 0 },
+Planet_info = [ { owner: 'Planet 1', planet: 'PL_1', alive: 1 },
+				{ owner: 'Planet 2', planet: 'PL_2', alive: 1 },
 				{ owner: 'Planet 3', planet: 'PL_3', alive: 0 },
 				{ owner: 'Planet 4', planet: 'PL_4', alive: 0 },
-				{ owner: 'Planet 5', planet: 'PL_5', alive: 1 },
-				{ owner: 'Planet 6', planet: 'PL_6', alive: 0 },
+				{ owner: 'Planet 5', planet: 'PL_5', alive: 0 },
+				{ owner: 'Planet 6', planet: 'PL_6', alive: 1 },
 				{ owner: 'Planet 7', planet: 'PL_7', alive: 0 },
 				{ owner: 'Planet 8', planet: 'PL_8', alive: 0 },
 				{ owner: 'Planet 9', planet: 'PL_9', alive: 0 },
 				{ owner: 'Planet X', planet: 'PL_X', alive: 0 }]
 
 # Values common to all files of this type
-Public_data = Spreadsheet.new(EXCL + 'tw_201703_round05.xlsx')
+Public_data = Spreadsheet.new(EXCL + 'tw_201703_round07.xlsx')
 # All possible hunt statuses, in specific order to maximize efficient search
 AllStatus = ['N','NNN','NNG','NNX','NGG','NGX','NXX','G','GGG','GGX','GXX','X','XXX']
 # Excel column numbers
@@ -92,14 +92,15 @@ def hunt(planet, owner)
 		# currently hunting: 5
 		possible = Point4D.new(-6,-59,-72,-26).point_set(GB) 
 	elsif exists(planet)
+		backup(planet)
 		possible = fr_sql(planet)
 	else
 		possible = make_possible(volleys)
 	end
-	if false
+	if true
 		# set to true to factor in a smartbomb
-		roo = Point4D.new(68,54,-19,32)
-		possible = roo.smartbomb(possible, 'XXX')
+		roo = Point4D.new(68,54,-19,32) # hits planet 8, misses all others
+		possible = roo.smartbomb(possible, 'X')
 	end
 	AllStatus.each do |status|
 		if volleys.key?(status)
@@ -115,15 +116,15 @@ def hunt(planet, owner)
 	return possible
 end
 
-def volley_generation(possible)
+def volley_generation(possible, size=10)
 	# generates random volleys and checks against coverage of possible space for planet
 	n = 20 # number of volleys to generate
 	m = 3  # number of volleys to print
 	volleys = {}
 	ranks = []
 	(0...n).each do |i|
-		# sample of 10, within 30, 10 and 3
-		sample, metrics = get_volley(possible, 10, [GB, NM, HT])
+		# sample of <size>, within 30, 10 and 3
+		sample, metrics = get_volley(possible, size, [GB, NM, HT])
 		tot =  metrics.reduce(0, :+) # sum of hit percetages
 		volleys[tot] = [sample, metrics]
 		ranks.push(tot)
@@ -205,8 +206,8 @@ end
 def Main()
 	#hunt_all()
 	optimize_all()
-	#possible = miss_hunter('PL_9')
-	#planet_data('PL_9').each { |k,v| puts "#{k}: #{v.length}" }
+	#possible = fr_sql('PL_9')
+	#volley_generation(possible, 7)
 end
 
 now = Time.now
