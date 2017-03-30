@@ -49,6 +49,21 @@ def examine_volley(possible, volley)
 	puts "out of #{possible.length} total points"
 end
 
+def smartbomb_optimization(possible)
+	# attempts to find best position for smart bomb
+	best = Point4D.new(0,0,0,0)
+	best_cnt = 0
+	possible.each do |test_pt|
+		cnt = 0
+		possible.each { |pt| cnt +=1 if test_pt.dist(pt) <= GB + SB }
+		if cnt > best_cnt
+			best = test_pt 
+			best_cnt = cnt 
+		end
+	end
+	return best, best_cnt
+end
+
 now = Time.now
 #Main()
 #quick()
@@ -63,6 +78,8 @@ arac_r6 = [
 			Point4D.new(-73, 25, 4, -20),
 			Point4D.new(-75, 35, 14, -11),
 			Point4D.new(-71, 33, 20, -14)]
-possible = fr_sql('PL_6')
-examine_volley(possible, arac_r6)
+possible = fr_sql('PL_9')
+best, best_cnt = smartbomb_optimization(possible)
+puts best
+puts "#{(100.0*best_cnt/possbile.length).round(2)}% points in glancing blow range"
 puts "Run time: #{Time.now - now}"
